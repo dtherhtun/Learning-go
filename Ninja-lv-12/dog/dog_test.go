@@ -10,7 +10,7 @@ type testpair struct {
 var tests = []testpair{
 	{1, 7},
 	{2, 14},
-	{7, 50},
+	{7, 49},
 }
 
 func TestYears(t *testing.T) {
