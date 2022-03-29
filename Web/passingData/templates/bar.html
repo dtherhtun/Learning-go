@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>The Bar</title>
+    </head>
+    <body>
+        <h1>Welcome to the bar, What can I get you to drink?</h1>
+
+        {{ if . }}
+            EMAIL: {{ .Email }}
+            FIRST: {{ .First }}
+            LAST: {{ .Last }}
+        {{ end }}
+    </body>
+</html>

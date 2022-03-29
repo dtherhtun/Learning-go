@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+    </head>
+    <body>
+        <form method="POST">
+            <input type="email" name="email" placeholder="email"><br>
+            <input type="text" name="firstname" placeholder="first name"><br>
+            <input type="text" name="lastname" placeholder="last name"><br>
+            <input type="submit">
+        </form>
+
+        {{ if .First }}
+            User Name : {{ .Email }}<br>
+            First Name : {{ .First }}<br>
+            Last Name  : {{ .Last }}<br>
+        {{ end }}
+        <br>
+        <h2>Go To <a href="/bar">The Bar</a></h2>
+    </body>
+</html>

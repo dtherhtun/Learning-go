@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Index</title>
+    </head>
+    <body>
+        {{ if .First }}
+            Email: {{ .Email }} <br>
+            First Name: {{ .First }} <br>
+            Last Name: {{ .Last }} <br>
+            Password: {{ .Pass }} <br>
+        {{ else }}
+            <h2><a href="/signup">Sign Up</a></h2> <br>
+            <h2><a href="/login">Login</a></h2> <br>
+        {{ end }}
+    </body>
+</html>
