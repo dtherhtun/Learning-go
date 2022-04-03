@@ -68,7 +68,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 		c = appendCookie(w, c, fname)
 	}
 	xs := strings.Split(c.Value, "|")
-	tpl.ExecuteTemplate(w, "index.html", xs[1:])
+	tpl.ExecuteTemplate(w, "index.html", xs)
 }
 
 func main() {
