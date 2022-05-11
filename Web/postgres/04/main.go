@@ -39,7 +39,7 @@ func main() {
 	r.HandleFunc("/", index)
 	r.HandleFunc("/books", bookIndex).Methods("GET")
 	r.HandleFunc("/books/{isbn}", booksShow).Methods("GET")
-	r.HandleFunc("/books/create/", booksCreateForm).Methods("GET")
+	r.HandleFunc("/books/create/new", booksCreateForm).Methods("GET")
 	r.HandleFunc("/books/create", booksCreateProcess).Methods("POST")
 	r.HandleFunc("/books/update/{isbn}", booksUpdateForm).Methods("GET")
 	r.HandleFunc("/books/update", booksUpdateProcess).Methods("POST")
