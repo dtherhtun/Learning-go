@@ -10,7 +10,7 @@ type Job struct {
 }
 
 func (j *Job) Wait() {
-	<- j.done
+	<-j.done
 }
 
 func (j *Job) Done() {

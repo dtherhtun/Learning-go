@@ -3,12 +3,12 @@
 package main
 
 import (
-    "bufio"
-    "fmt"
-    "io"
-    "os"
-    "strconv"
-    "strings"
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"strconv"
+	"strings"
 )
 
 /*
@@ -21,63 +21,62 @@ import (
  */
 
 func bonAppetit(bill []int32, k int32, b int32) {
-    // Write your code here
-    var tc int32
-    for _, v := range bill {
-        tc+=v
-    }
-    cost_per_person := (tc - bill[k])/2
-    if b == cost_per_person {
-        fmt.Println("Bon Appetit")
-    } else {
-        fmt.Println(b-cost_per_person)
-    }
+	// Write your code here
+	var tc int32
+	for _, v := range bill {
+		tc += v
+	}
+	cost_per_person := (tc - bill[k]) / 2
+	if b == cost_per_person {
+		fmt.Println("Bon Appetit")
+	} else {
+		fmt.Println(b - cost_per_person)
+	}
 
 }
 
 func main() {
-    reader := bufio.NewReaderSize(os.Stdin, 16 * 1024 * 1024)
+	reader := bufio.NewReaderSize(os.Stdin, 16*1024*1024)
 
-    firstMultipleInput := strings.Split(strings.TrimSpace(readLine(reader)), " ")
+	firstMultipleInput := strings.Split(strings.TrimSpace(readLine(reader)), " ")
 
-    nTemp, err := strconv.ParseInt(firstMultipleInput[0], 10, 64)
-    checkError(err)
-    n := int32(nTemp)
+	nTemp, err := strconv.ParseInt(firstMultipleInput[0], 10, 64)
+	checkError(err)
+	n := int32(nTemp)
 
-    kTemp, err := strconv.ParseInt(firstMultipleInput[1], 10, 64)
-    checkError(err)
-    k := int32(kTemp)
+	kTemp, err := strconv.ParseInt(firstMultipleInput[1], 10, 64)
+	checkError(err)
+	k := int32(kTemp)
 
-    billTemp := strings.Split(strings.TrimSpace(readLine(reader)), " ")
+	billTemp := strings.Split(strings.TrimSpace(readLine(reader)), " ")
 
-    var bill []int32
+	var bill []int32
 
-    for i := 0; i < int(n); i++ {
-        billItemTemp, err := strconv.ParseInt(billTemp[i], 10, 64)
-        checkError(err)
-        billItem := int32(billItemTemp)
-        bill = append(bill, billItem)
-    }
+	for i := 0; i < int(n); i++ {
+		billItemTemp, err := strconv.ParseInt(billTemp[i], 10, 64)
+		checkError(err)
+		billItem := int32(billItemTemp)
+		bill = append(bill, billItem)
+	}
 
-    bTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
-    checkError(err)
-    b := int32(bTemp)
+	bTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
+	checkError(err)
+	b := int32(bTemp)
 
-    bonAppetit(bill, k, b)
+	bonAppetit(bill, k, b)
 }
 
 func readLine(reader *bufio.Reader) string {
-    str, _, err := reader.ReadLine()
-    if err == io.EOF {
-        return ""
-    }
+	str, _, err := reader.ReadLine()
+	if err == io.EOF {
+		return ""
+	}
 
-    return strings.TrimRight(string(str), "\r\n")
+	return strings.TrimRight(string(str), "\r\n")
 }
 
 func checkError(err error) {
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 }
-

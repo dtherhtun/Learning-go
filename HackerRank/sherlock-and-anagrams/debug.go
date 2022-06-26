@@ -24,7 +24,7 @@ func main() {
 			fmt.Println("after-sort=", b)
 			sub := strings.Join(b, "")
 			fmt.Println("substring=", sub)
-		
+
 			if _, ok := m[sub]; ok {
 				m[sub] += 1
 				fmt.Println("m-exist=", m[sub])
@@ -41,4 +41,3 @@ func main() {
 	}
 	fmt.Println("result=", result)
 }
-

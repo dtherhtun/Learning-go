@@ -1,13 +1,13 @@
 package main
 
 import (
-    "bufio"
-    "fmt"
-    "io"
-    "os"
-    "strconv"
-    "strings"
-    "sort"
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"sort"
+	"strconv"
+	"strings"
 )
 
 /*
@@ -18,65 +18,64 @@ import (
  */
 
 func sherlockAndAnagrams(s string) int32 {
-    // Write your code here
-    var result int32 
-    for i := 1; i < len(s); i++ {
-        m := make(map[string]int32)
-        for j := 0; j < len(s)-i+1; j++ {
-            s := strings.Split(s, "") 
-            sa := s[j:j+i]   
-            sort.Strings(sa)
-            sub := strings.Join(sa, "")
-            
-            if _, ok := m[sub]; ok {
-                m[sub] += 1
-            } else {
-                m[sub] = 1
-            }
-            result+=m[sub]-1
-        }
-    }
-    return result
+	// Write your code here
+	var result int32
+	for i := 1; i < len(s); i++ {
+		m := make(map[string]int32)
+		for j := 0; j < len(s)-i+1; j++ {
+			s := strings.Split(s, "")
+			sa := s[j : j+i]
+			sort.Strings(sa)
+			sub := strings.Join(sa, "")
+
+			if _, ok := m[sub]; ok {
+				m[sub] += 1
+			} else {
+				m[sub] = 1
+			}
+			result += m[sub] - 1
+		}
+	}
+	return result
 
 }
 
 func main() {
-    reader := bufio.NewReaderSize(os.Stdin, 16 * 1024 * 1024)
+	reader := bufio.NewReaderSize(os.Stdin, 16*1024*1024)
 
-    stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
-    checkError(err)
+	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
+	checkError(err)
 
-    defer stdout.Close()
+	defer stdout.Close()
 
-    writer := bufio.NewWriterSize(stdout, 16 * 1024 * 1024)
+	writer := bufio.NewWriterSize(stdout, 16*1024*1024)
 
-    qTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
-    checkError(err)
-    q := int32(qTemp)
+	qTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
+	checkError(err)
+	q := int32(qTemp)
 
-    for qItr := 0; qItr < int(q); qItr++ {
-        s := readLine(reader)
+	for qItr := 0; qItr < int(q); qItr++ {
+		s := readLine(reader)
 
-        result := sherlockAndAnagrams(s)
+		result := sherlockAndAnagrams(s)
 
-        fmt.Fprintf(writer, "%d\n", result)
-    }
+		fmt.Fprintf(writer, "%d\n", result)
+	}
 
-    writer.Flush()
+	writer.Flush()
 }
 
 func readLine(reader *bufio.Reader) string {
-    str, _, err := reader.ReadLine()
-    if err == io.EOF {
-        return ""
-    }
+	str, _, err := reader.ReadLine()
+	if err == io.EOF {
+		return ""
+	}
 
-    return strings.TrimRight(string(str), "\r\n")
+	return strings.TrimRight(string(str), "\r\n")
 }
 
 func checkError(err error) {
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 }
-

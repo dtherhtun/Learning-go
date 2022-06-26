@@ -2,12 +2,12 @@
 package main
 
 import (
-    "bufio"
-    "fmt"
-    "io"
-    "os"
-    "strconv"
-    "strings"
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"strconv"
+	"strings"
 )
 
 /*
@@ -18,79 +18,78 @@ import (
  */
 
 func permutationEquation(p []int32) []int32 {
-    // Write your code here
-    var history []int32
-    var position []int
-    
-    for j := int32(1); j <= int32(len(p)); j++ {
-        for k, v := range p {
-            if j == v {
-            position = append(position, k+1)
-            }
-        }
-    }
-    for i := 0; i < len(position); i++ {
-        for k, v := range p {
-            if int32(position[i]) == v {
-                history = append(history, int32(k+1))
-            }
-        }
-    }
-    return history
+	// Write your code here
+	var history []int32
+	var position []int
+
+	for j := int32(1); j <= int32(len(p)); j++ {
+		for k, v := range p {
+			if j == v {
+				position = append(position, k+1)
+			}
+		}
+	}
+	for i := 0; i < len(position); i++ {
+		for k, v := range p {
+			if int32(position[i]) == v {
+				history = append(history, int32(k+1))
+			}
+		}
+	}
+	return history
 }
 
 func main() {
-    reader := bufio.NewReaderSize(os.Stdin, 16 * 1024 * 1024)
+	reader := bufio.NewReaderSize(os.Stdin, 16*1024*1024)
 
-    stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
-    checkError(err)
+	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
+	checkError(err)
 
-    defer stdout.Close()
+	defer stdout.Close()
 
-    writer := bufio.NewWriterSize(stdout, 16 * 1024 * 1024)
+	writer := bufio.NewWriterSize(stdout, 16*1024*1024)
 
-    nTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
-    checkError(err)
-    n := int32(nTemp)
+	nTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
+	checkError(err)
+	n := int32(nTemp)
 
-    pTemp := strings.Split(strings.TrimSpace(readLine(reader)), " ")
+	pTemp := strings.Split(strings.TrimSpace(readLine(reader)), " ")
 
-    var p []int32
+	var p []int32
 
-    for i := 0; i < int(n); i++ {
-        pItemTemp, err := strconv.ParseInt(pTemp[i], 10, 64)
-        checkError(err)
-        pItem := int32(pItemTemp)
-        p = append(p, pItem)
-    }
+	for i := 0; i < int(n); i++ {
+		pItemTemp, err := strconv.ParseInt(pTemp[i], 10, 64)
+		checkError(err)
+		pItem := int32(pItemTemp)
+		p = append(p, pItem)
+	}
 
-    result := permutationEquation(p)
+	result := permutationEquation(p)
 
-    for i, resultItem := range result {
-        fmt.Fprintf(writer, "%d", resultItem)
+	for i, resultItem := range result {
+		fmt.Fprintf(writer, "%d", resultItem)
 
-        if i != len(result) - 1 {
-            fmt.Fprintf(writer, "\n")
-        }
-    }
+		if i != len(result)-1 {
+			fmt.Fprintf(writer, "\n")
+		}
+	}
 
-    fmt.Fprintf(writer, "\n")
+	fmt.Fprintf(writer, "\n")
 
-    writer.Flush()
+	writer.Flush()
 }
 
 func readLine(reader *bufio.Reader) string {
-    str, _, err := reader.ReadLine()
-    if err == io.EOF {
-        return ""
-    }
+	str, _, err := reader.ReadLine()
+	if err == io.EOF {
+		return ""
+	}
 
-    return strings.TrimRight(string(str), "\r\n")
+	return strings.TrimRight(string(str), "\r\n")
 }
 
 func checkError(err error) {
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 }
-

@@ -6,11 +6,11 @@ import (
 
 type Job struct {
 	State string
-	done chan struct{}
+	done  chan struct{}
 }
 
 func (j *Job) Wait() {
-	<- j.done
+	<-j.done
 }
 
 func (j *Job) Done() {
