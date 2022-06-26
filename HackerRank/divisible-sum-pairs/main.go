@@ -2,12 +2,12 @@
 package main
 
 import (
-    "bufio"
-    "fmt"
-    "io"
-    "os"
-    "strconv"
-    "strings"
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"strconv"
+	"strings"
 )
 
 /*
@@ -21,73 +21,72 @@ import (
  */
 
 func divisibleSumPairs(n int32, k int32, ar []int32) int32 {
-    // Write your code here
+	// Write your code here
 
-    var count int32
-    //var pair [][]int
+	var count int32
+	//var pair [][]int
 
-    for i := 0; i < int(n-1); i++ {
-        for j:= i+1; j < int(n); j++ {
-            fmt.Println(i,"+",j,"=",i+j,"==>",k)
-            if i != j && (ar[i] + ar[j]) % k == 0 {
-                count++
-                fmt.Println("count from j->", count)
-            }
-        }
-    }
-    return count
+	for i := 0; i < int(n-1); i++ {
+		for j := i + 1; j < int(n); j++ {
+			fmt.Println(i, "+", j, "=", i+j, "==>", k)
+			if i != j && (ar[i]+ar[j])%k == 0 {
+				count++
+				fmt.Println("count from j->", count)
+			}
+		}
+	}
+	return count
 }
 
 func main() {
-    reader := bufio.NewReaderSize(os.Stdin, 16 * 1024 * 1024)
+	reader := bufio.NewReaderSize(os.Stdin, 16*1024*1024)
 
-    stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
-    checkError(err)
+	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
+	checkError(err)
 
-    defer stdout.Close()
+	defer stdout.Close()
 
-    writer := bufio.NewWriterSize(stdout, 16 * 1024 * 1024)
+	writer := bufio.NewWriterSize(stdout, 16*1024*1024)
 
-    firstMultipleInput := strings.Split(strings.TrimSpace(readLine(reader)), " ")
+	firstMultipleInput := strings.Split(strings.TrimSpace(readLine(reader)), " ")
 
-    nTemp, err := strconv.ParseInt(firstMultipleInput[0], 10, 64)
-    checkError(err)
-    n := int32(nTemp)
+	nTemp, err := strconv.ParseInt(firstMultipleInput[0], 10, 64)
+	checkError(err)
+	n := int32(nTemp)
 
-    kTemp, err := strconv.ParseInt(firstMultipleInput[1], 10, 64)
-    checkError(err)
-    k := int32(kTemp)
+	kTemp, err := strconv.ParseInt(firstMultipleInput[1], 10, 64)
+	checkError(err)
+	k := int32(kTemp)
 
-    arTemp := strings.Split(strings.TrimSpace(readLine(reader)), " ")
+	arTemp := strings.Split(strings.TrimSpace(readLine(reader)), " ")
 
-    var ar []int32
+	var ar []int32
 
-    for i := 0; i < int(n); i++ {
-        arItemTemp, err := strconv.ParseInt(arTemp[i], 10, 64)
-        checkError(err)
-        arItem := int32(arItemTemp)
-        ar = append(ar, arItem)
-    }
+	for i := 0; i < int(n); i++ {
+		arItemTemp, err := strconv.ParseInt(arTemp[i], 10, 64)
+		checkError(err)
+		arItem := int32(arItemTemp)
+		ar = append(ar, arItem)
+	}
 
-    result := divisibleSumPairs(n, k, ar)
+	result := divisibleSumPairs(n, k, ar)
 
-    fmt.Fprintf(writer, "%d\n", result)
+	fmt.Fprintf(writer, "%d\n", result)
 
-    writer.Flush()
+	writer.Flush()
 }
 
 func readLine(reader *bufio.Reader) string {
-    str, _, err := reader.ReadLine()
-    if err == io.EOF {
-        return ""
-    }
+	str, _, err := reader.ReadLine()
+	if err == io.EOF {
+		return ""
+	}
 
-    return strings.TrimRight(string(str), "\r\n")
+	return strings.TrimRight(string(str), "\r\n")
 }
 
 func checkError(err error) {
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 }
-

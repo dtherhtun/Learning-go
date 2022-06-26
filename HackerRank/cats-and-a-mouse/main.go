@@ -2,80 +2,79 @@
 package main
 
 import (
-    "bufio"
-    "fmt"
-    "io"
-    "os"
-    "strconv"
-    "strings"
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"strconv"
+	"strings"
 )
 
 // Complete the catAndMouse function below.
 func catAndMouse(x int32, y int32, z int32) string {
 
-    if x < y && z - x > y - z  {
-        return "Cat B"
-    } else if x < y && z - x < y - z {
-        return "Cat A"
-    } else if y < x && x - z > z - y {
-        return "Cat B"
-    } else if y < x && x - z < z - y {
-        return "Cat A"
-    } else {
-        return "Mouse C"
-    }
+	if x < y && z-x > y-z {
+		return "Cat B"
+	} else if x < y && z-x < y-z {
+		return "Cat A"
+	} else if y < x && x-z > z-y {
+		return "Cat B"
+	} else if y < x && x-z < z-y {
+		return "Cat A"
+	} else {
+		return "Mouse C"
+	}
 
 }
 
 func main() {
-    reader := bufio.NewReaderSize(os.Stdin, 1024 * 1024)
+	reader := bufio.NewReaderSize(os.Stdin, 1024*1024)
 
-    stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
-    checkError(err)
+	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
+	checkError(err)
 
-    defer stdout.Close()
+	defer stdout.Close()
 
-    writer := bufio.NewWriterSize(stdout, 1024 * 1024)
+	writer := bufio.NewWriterSize(stdout, 1024*1024)
 
-    qTemp, err := strconv.ParseInt(readLine(reader), 10, 64)
-    checkError(err)
-    q := int32(qTemp)
+	qTemp, err := strconv.ParseInt(readLine(reader), 10, 64)
+	checkError(err)
+	q := int32(qTemp)
 
-    for qItr := 0; qItr < int(q); qItr++ {
-        xyz := strings.Split(readLine(reader), " ")
+	for qItr := 0; qItr < int(q); qItr++ {
+		xyz := strings.Split(readLine(reader), " ")
 
-        xTemp, err := strconv.ParseInt(xyz[0], 10, 64)
-        checkError(err)
-        x := int32(xTemp)
+		xTemp, err := strconv.ParseInt(xyz[0], 10, 64)
+		checkError(err)
+		x := int32(xTemp)
 
-        yTemp, err := strconv.ParseInt(xyz[1], 10, 64)
-        checkError(err)
-        y := int32(yTemp)
+		yTemp, err := strconv.ParseInt(xyz[1], 10, 64)
+		checkError(err)
+		y := int32(yTemp)
 
-        zTemp, err := strconv.ParseInt(xyz[2], 10, 64)
-        checkError(err)
-        z := int32(zTemp)
+		zTemp, err := strconv.ParseInt(xyz[2], 10, 64)
+		checkError(err)
+		z := int32(zTemp)
 
-        result := catAndMouse(x, y, z)
+		result := catAndMouse(x, y, z)
 
-        fmt.Fprintf(writer, "%s\n", result)
-    }
+		fmt.Fprintf(writer, "%s\n", result)
+	}
 
-    writer.Flush()
+	writer.Flush()
 }
 
 func readLine(reader *bufio.Reader) string {
-    str, _, err := reader.ReadLine()
-    if err == io.EOF {
-        return ""
-    }
+	str, _, err := reader.ReadLine()
+	if err == io.EOF {
+		return ""
+	}
 
-    return strings.TrimRight(string(str), "\r\n")
+	return strings.TrimRight(string(str), "\r\n")
 }
 
 func checkError(err error) {
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 }
-

@@ -2,12 +2,12 @@
 package main
 
 import (
-    "bufio"
-    "fmt"
-    "io"
-    "os"
-    "strconv"
-    "strings"
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"strconv"
+	"strings"
 )
 
 /*
@@ -18,82 +18,81 @@ import (
  */
 
 func breakingRecords(scores []int32) []int32 {
-    // Write your code here
-    scoreL := scores[0]
-    scoreH := scores[0]
-    var scoresL []int32
-    var scoresH []int32
-    var scoresHL []int32
-    for _, v := range scores {
-        if scoreL > v {
-            scoreL = v
-            scoresL = append(scoresL, scoreL)
-        }
-        if scoreH < v {
-            scoreH = v
-            scoresH = append(scoresH, scoreH)
-        }
-    }
-    fmt.Println("score Low->", scoreL)
-    fmt.Println("score High->", scoreH)
-    fmt.Println("scores Low-->", scoresL)
-    fmt.Println("scores Hight-->", scoresH)
-    scoresHL = append(scoresHL, int32(len(scoresH)), int32(len(scoresL)))
-    return scoresHL
+	// Write your code here
+	scoreL := scores[0]
+	scoreH := scores[0]
+	var scoresL []int32
+	var scoresH []int32
+	var scoresHL []int32
+	for _, v := range scores {
+		if scoreL > v {
+			scoreL = v
+			scoresL = append(scoresL, scoreL)
+		}
+		if scoreH < v {
+			scoreH = v
+			scoresH = append(scoresH, scoreH)
+		}
+	}
+	fmt.Println("score Low->", scoreL)
+	fmt.Println("score High->", scoreH)
+	fmt.Println("scores Low-->", scoresL)
+	fmt.Println("scores Hight-->", scoresH)
+	scoresHL = append(scoresHL, int32(len(scoresH)), int32(len(scoresL)))
+	return scoresHL
 }
 
 func main() {
-    reader := bufio.NewReaderSize(os.Stdin, 16 * 1024 * 1024)
+	reader := bufio.NewReaderSize(os.Stdin, 16*1024*1024)
 
-    stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
-    checkError(err)
+	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
+	checkError(err)
 
-    defer stdout.Close()
+	defer stdout.Close()
 
-    writer := bufio.NewWriterSize(stdout, 16 * 1024 * 1024)
+	writer := bufio.NewWriterSize(stdout, 16*1024*1024)
 
-    nTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
-    checkError(err)
-    n := int32(nTemp)
+	nTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
+	checkError(err)
+	n := int32(nTemp)
 
-    scoresTemp := strings.Split(strings.TrimSpace(readLine(reader)), " ")
+	scoresTemp := strings.Split(strings.TrimSpace(readLine(reader)), " ")
 
-    var scores []int32
+	var scores []int32
 
-    for i := 0; i < int(n); i++ {
-        scoresItemTemp, err := strconv.ParseInt(scoresTemp[i], 10, 64)
-        checkError(err)
-        scoresItem := int32(scoresItemTemp)
-        scores = append(scores, scoresItem)
-    }
+	for i := 0; i < int(n); i++ {
+		scoresItemTemp, err := strconv.ParseInt(scoresTemp[i], 10, 64)
+		checkError(err)
+		scoresItem := int32(scoresItemTemp)
+		scores = append(scores, scoresItem)
+	}
 
-    result := breakingRecords(scores)
+	result := breakingRecords(scores)
 
-    for i, resultItem := range result {
-        fmt.Fprintf(writer, "%d", resultItem)
+	for i, resultItem := range result {
+		fmt.Fprintf(writer, "%d", resultItem)
 
-        if i != len(result) - 1 {
-            fmt.Fprintf(writer, " ")
-        }
-    }
+		if i != len(result)-1 {
+			fmt.Fprintf(writer, " ")
+		}
+	}
 
-    fmt.Fprintf(writer, "\n")
+	fmt.Fprintf(writer, "\n")
 
-    writer.Flush()
+	writer.Flush()
 }
 
 func readLine(reader *bufio.Reader) string {
-    str, _, err := reader.ReadLine()
-    if err == io.EOF {
-        return ""
-    }
+	str, _, err := reader.ReadLine()
+	if err == io.EOF {
+		return ""
+	}
 
-    return strings.TrimRight(string(str), "\r\n")
+	return strings.TrimRight(string(str), "\r\n")
 }
 
 func checkError(err error) {
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 }
-

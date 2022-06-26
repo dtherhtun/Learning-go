@@ -1,12 +1,12 @@
 package main
 
 import (
-    "bufio"
-    "fmt"
-    "io"
-    "os"
-    "strings"
-    "time"
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"strings"
+	"time"
 )
 
 /*
@@ -17,45 +17,44 @@ import (
  */
 
 func timeConversion(s string) string {
-    // Write your code here
-    format1 := "03:04:05PM"
-    format2 := "15:04:05"
-    tt, _ := time.Parse(format1, s)
-    
-    return tt.Format(format2)
+	// Write your code here
+	format1 := "03:04:05PM"
+	format2 := "15:04:05"
+	tt, _ := time.Parse(format1, s)
+
+	return tt.Format(format2)
 }
 
 func main() {
-    reader := bufio.NewReaderSize(os.Stdin, 16 * 1024 * 1024)
+	reader := bufio.NewReaderSize(os.Stdin, 16*1024*1024)
 
-    stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
-    checkError(err)
+	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
+	checkError(err)
 
-    defer stdout.Close()
+	defer stdout.Close()
 
-    writer := bufio.NewWriterSize(stdout, 16 * 1024 * 1024)
+	writer := bufio.NewWriterSize(stdout, 16*1024*1024)
 
-    s := readLine(reader)
+	s := readLine(reader)
 
-    result := timeConversion(s)
+	result := timeConversion(s)
 
-    fmt.Fprintf(writer, "%s\n", result)
+	fmt.Fprintf(writer, "%s\n", result)
 
-    writer.Flush()
+	writer.Flush()
 }
 
 func readLine(reader *bufio.Reader) string {
-    str, _, err := reader.ReadLine()
-    if err == io.EOF {
-        return ""
-    }
+	str, _, err := reader.ReadLine()
+	if err == io.EOF {
+		return ""
+	}
 
-    return strings.TrimRight(string(str), "\r\n")
+	return strings.TrimRight(string(str), "\r\n")
 }
 
 func checkError(err error) {
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 }
-

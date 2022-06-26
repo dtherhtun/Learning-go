@@ -15,4 +15,3 @@ func main() {
 	log := Log{"Hello", ts}
 	fmt.Printf("%+v\n", log)
 }
-

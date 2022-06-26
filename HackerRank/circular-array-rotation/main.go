@@ -2,12 +2,12 @@
 package main
 
 import (
-    "bufio"
-    "fmt"
-    "io"
-    "os"
-    "strconv"
-    "strings"
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"strconv"
+	"strings"
 )
 
 /*
@@ -21,85 +21,84 @@ import (
  */
 
 func circularArrayRotation(a []int32, k int32, queries []int32) []int32 {
-    // Write your code here
-    var result []int32
-    for _, v := range queries {
-        result = append(result, a[ ( int32(len(a)) - k % int32(len(a)) + v ) % int32(len(a)) ])
-    }
-    return result
+	// Write your code here
+	var result []int32
+	for _, v := range queries {
+		result = append(result, a[(int32(len(a))-k%int32(len(a))+v)%int32(len(a))])
+	}
+	return result
 }
 
 func main() {
-    reader := bufio.NewReaderSize(os.Stdin, 16 * 1024 * 1024)
+	reader := bufio.NewReaderSize(os.Stdin, 16*1024*1024)
 
-    stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
-    checkError(err)
+	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
+	checkError(err)
 
-    defer stdout.Close()
+	defer stdout.Close()
 
-    writer := bufio.NewWriterSize(stdout, 16 * 1024 * 1024)
+	writer := bufio.NewWriterSize(stdout, 16*1024*1024)
 
-    firstMultipleInput := strings.Split(strings.TrimSpace(readLine(reader)), " ")
+	firstMultipleInput := strings.Split(strings.TrimSpace(readLine(reader)), " ")
 
-    nTemp, err := strconv.ParseInt(firstMultipleInput[0], 10, 64)
-    checkError(err)
-    n := int32(nTemp)
+	nTemp, err := strconv.ParseInt(firstMultipleInput[0], 10, 64)
+	checkError(err)
+	n := int32(nTemp)
 
-    kTemp, err := strconv.ParseInt(firstMultipleInput[1], 10, 64)
-    checkError(err)
-    k := int32(kTemp)
+	kTemp, err := strconv.ParseInt(firstMultipleInput[1], 10, 64)
+	checkError(err)
+	k := int32(kTemp)
 
-    qTemp, err := strconv.ParseInt(firstMultipleInput[2], 10, 64)
-    checkError(err)
-    q := int32(qTemp)
+	qTemp, err := strconv.ParseInt(firstMultipleInput[2], 10, 64)
+	checkError(err)
+	q := int32(qTemp)
 
-    aTemp := strings.Split(strings.TrimSpace(readLine(reader)), " ")
+	aTemp := strings.Split(strings.TrimSpace(readLine(reader)), " ")
 
-    var a []int32
+	var a []int32
 
-    for i := 0; i < int(n); i++ {
-        aItemTemp, err := strconv.ParseInt(aTemp[i], 10, 64)
-        checkError(err)
-        aItem := int32(aItemTemp)
-        a = append(a, aItem)
-    }
+	for i := 0; i < int(n); i++ {
+		aItemTemp, err := strconv.ParseInt(aTemp[i], 10, 64)
+		checkError(err)
+		aItem := int32(aItemTemp)
+		a = append(a, aItem)
+	}
 
-    var queries []int32
+	var queries []int32
 
-    for i := 0; i < int(q); i++ {
-        queriesItemTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
-        checkError(err)
-        queriesItem := int32(queriesItemTemp)
-        queries = append(queries, queriesItem)
-    }
+	for i := 0; i < int(q); i++ {
+		queriesItemTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
+		checkError(err)
+		queriesItem := int32(queriesItemTemp)
+		queries = append(queries, queriesItem)
+	}
 
-    result := circularArrayRotation(a, k, queries)
+	result := circularArrayRotation(a, k, queries)
 
-    for i, resultItem := range result {
-        fmt.Fprintf(writer, "%d", resultItem)
+	for i, resultItem := range result {
+		fmt.Fprintf(writer, "%d", resultItem)
 
-        if i != len(result) - 1 {
-            fmt.Fprintf(writer, "\n")
-        }
-    }
+		if i != len(result)-1 {
+			fmt.Fprintf(writer, "\n")
+		}
+	}
 
-    fmt.Fprintf(writer, "\n")
+	fmt.Fprintf(writer, "\n")
 
-    writer.Flush()
+	writer.Flush()
 }
 
 func readLine(reader *bufio.Reader) string {
-    str, _, err := reader.ReadLine()
-    if err == io.EOF {
-        return ""
-    }
+	str, _, err := reader.ReadLine()
+	if err == io.EOF {
+		return ""
+	}
 
-    return strings.TrimRight(string(str), "\r\n")
+	return strings.TrimRight(string(str), "\r\n")
 }
 
 func checkError(err error) {
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 }
-

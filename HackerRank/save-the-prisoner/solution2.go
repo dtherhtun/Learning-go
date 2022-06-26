@@ -1,12 +1,12 @@
 package main
 
 import (
-    "bufio"
-    "fmt"
-    "io"
-    "os"
-    "strconv"
-    "strings"
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"strconv"
+	"strings"
 )
 
 /*
@@ -20,63 +20,62 @@ import (
  */
 
 func saveThePrisoner(n int32, m int32, s int32) int32 {
-    // Write your code here
-    if (m+s-1)%n == 0 {
-        return n
-    } else {
-        return (m+s-1)%n
-    }
+	// Write your code here
+	if (m+s-1)%n == 0 {
+		return n
+	} else {
+		return (m + s - 1) % n
+	}
 }
 
 func main() {
-    reader := bufio.NewReaderSize(os.Stdin, 16 * 1024 * 1024)
+	reader := bufio.NewReaderSize(os.Stdin, 16*1024*1024)
 
-    stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
-    checkError(err)
+	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
+	checkError(err)
 
-    defer stdout.Close()
+	defer stdout.Close()
 
-    writer := bufio.NewWriterSize(stdout, 16 * 1024 * 1024)
+	writer := bufio.NewWriterSize(stdout, 16*1024*1024)
 
-    tTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
-    checkError(err)
-    t := int32(tTemp)
+	tTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
+	checkError(err)
+	t := int32(tTemp)
 
-    for tItr := 0; tItr < int(t); tItr++ {
-        firstMultipleInput := strings.Split(strings.TrimSpace(readLine(reader)), " ")
+	for tItr := 0; tItr < int(t); tItr++ {
+		firstMultipleInput := strings.Split(strings.TrimSpace(readLine(reader)), " ")
 
-        nTemp, err := strconv.ParseInt(firstMultipleInput[0], 10, 64)
-        checkError(err)
-        n := int32(nTemp)
+		nTemp, err := strconv.ParseInt(firstMultipleInput[0], 10, 64)
+		checkError(err)
+		n := int32(nTemp)
 
-        mTemp, err := strconv.ParseInt(firstMultipleInput[1], 10, 64)
-        checkError(err)
-        m := int32(mTemp)
+		mTemp, err := strconv.ParseInt(firstMultipleInput[1], 10, 64)
+		checkError(err)
+		m := int32(mTemp)
 
-        sTemp, err := strconv.ParseInt(firstMultipleInput[2], 10, 64)
-        checkError(err)
-        s := int32(sTemp)
+		sTemp, err := strconv.ParseInt(firstMultipleInput[2], 10, 64)
+		checkError(err)
+		s := int32(sTemp)
 
-        result := saveThePrisoner(n, m, s)
+		result := saveThePrisoner(n, m, s)
 
-        fmt.Fprintf(writer, "%d\n", result)
-    }
+		fmt.Fprintf(writer, "%d\n", result)
+	}
 
-    writer.Flush()
+	writer.Flush()
 }
 
 func readLine(reader *bufio.Reader) string {
-    str, _, err := reader.ReadLine()
-    if err == io.EOF {
-        return ""
-    }
+	str, _, err := reader.ReadLine()
+	if err == io.EOF {
+		return ""
+	}
 
-    return strings.TrimRight(string(str), "\r\n")
+	return strings.TrimRight(string(str), "\r\n")
 }
 
 func checkError(err error) {
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 }
-

@@ -6,6 +6,6 @@ import (
 
 func main() {
 	data := []byte{'1', '2', '9'}
-	s  := string(data)
+	s := string(data)
 	fmt.Println(s)
 }

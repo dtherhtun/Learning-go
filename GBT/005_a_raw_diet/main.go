@@ -1,4 +1,4 @@
-// One of the most common uses for raw strings is to create multi-line strings. 
+// One of the most common uses for raw strings is to create multi-line strings.
 
 package main
 

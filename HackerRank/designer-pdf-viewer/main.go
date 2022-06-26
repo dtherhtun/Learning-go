@@ -1,12 +1,12 @@
 package main
 
 import (
-    "bufio"
-    "fmt"
-    "io"
-    "os"
-    "strconv"
-    "strings"
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+	"strconv"
+	"strings"
 )
 
 /*
@@ -19,66 +19,65 @@ import (
  */
 
 func designerPdfViewer(h []int32, word string) int32 {
-    // Write your code here
-    var max int32
-    m := make(map[string]int32)
-    
-    alphabet := "abcdefghijklmnopqrstuvwxyz"
-    sa := strings.Split(alphabet, "")
-    for i := 0 ; i < len(h); i++ {
-        m[sa[i]] = h[i]
-    }
-    wa := strings.Split(word, "")
-    for _, v := range wa {
-        if max < m[v] {
-            max = m[v]
-        }
-    }
-    return max * int32(len(word))
+	// Write your code here
+	var max int32
+	m := make(map[string]int32)
+
+	alphabet := "abcdefghijklmnopqrstuvwxyz"
+	sa := strings.Split(alphabet, "")
+	for i := 0; i < len(h); i++ {
+		m[sa[i]] = h[i]
+	}
+	wa := strings.Split(word, "")
+	for _, v := range wa {
+		if max < m[v] {
+			max = m[v]
+		}
+	}
+	return max * int32(len(word))
 }
 
 func main() {
-    reader := bufio.NewReaderSize(os.Stdin, 16 * 1024 * 1024)
+	reader := bufio.NewReaderSize(os.Stdin, 16*1024*1024)
 
-    stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
-    checkError(err)
+	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
+	checkError(err)
 
-    defer stdout.Close()
+	defer stdout.Close()
 
-    writer := bufio.NewWriterSize(stdout, 16 * 1024 * 1024)
+	writer := bufio.NewWriterSize(stdout, 16*1024*1024)
 
-    hTemp := strings.Split(strings.TrimSpace(readLine(reader)), " ")
+	hTemp := strings.Split(strings.TrimSpace(readLine(reader)), " ")
 
-    var h []int32
+	var h []int32
 
-    for i := 0; i < 26; i++ {
-        hItemTemp, err := strconv.ParseInt(hTemp[i], 10, 64)
-        checkError(err)
-        hItem := int32(hItemTemp)
-        h = append(h, hItem)
-    }
+	for i := 0; i < 26; i++ {
+		hItemTemp, err := strconv.ParseInt(hTemp[i], 10, 64)
+		checkError(err)
+		hItem := int32(hItemTemp)
+		h = append(h, hItem)
+	}
 
-    word := readLine(reader)
+	word := readLine(reader)
 
-    result := designerPdfViewer(h, word)
+	result := designerPdfViewer(h, word)
 
-    fmt.Fprintf(writer, "%d\n", result)
+	fmt.Fprintf(writer, "%d\n", result)
 
-    writer.Flush()
+	writer.Flush()
 }
 
 func readLine(reader *bufio.Reader) string {
-    str, _, err := reader.ReadLine()
-    if err == io.EOF {
-        return ""
-    }
+	str, _, err := reader.ReadLine()
+	if err == io.EOF {
+		return ""
+	}
 
-    return strings.TrimRight(string(str), "\r\n")
+	return strings.TrimRight(string(str), "\r\n")
 }
 
 func checkError(err error) {
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 }
-

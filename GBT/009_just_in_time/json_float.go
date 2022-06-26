@@ -17,6 +17,6 @@ func main() {
 	if err := json.Unmarshal(data, &n2); err != nil {
 		log.Fatal(err)
 	}
-	
+
 	fmt.Printf("n1 is %T, n2 is %T\n", n1, n2)
 }

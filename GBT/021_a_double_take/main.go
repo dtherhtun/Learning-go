@@ -1,4 +1,4 @@
-// init is the final stage in package initialization after imported 
+// init is the final stage in package initialization after imported
 // modules are initialized and package-level variables are initialized.
 
 package main
