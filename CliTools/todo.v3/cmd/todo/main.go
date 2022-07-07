@@ -17,7 +17,7 @@ func main() {
 	add := flag.Bool("add", false, "Add task to the ToDo list")
 	del := flag.Int("del", 0, "Del task from the ToDo list")
 	list := flag.Bool("list", false, "List all tasks")
-	todo := flag.Bool("todo", false, "Only Show todo list")
+	nlist := flag.Bool("l", false, "Only Show ToDo list")
 	complete := flag.Int("complete", 0, "Item to be completed")
 	verbose := flag.Bool("verbose", false, "Detail info of task from the ToDo list")
 
@@ -41,10 +41,10 @@ func main() {
 	}
 
 	switch {
-	case *todo:
-		for _, t := range l {
-			if t.Done == true {
-				fmt.Print(l)
+	case *nlist:
+		for k, v := range *l {
+			if v.Done {
+				fmt.Printf("  %d: %s\n", k+1, v.Task)
 			}
 		}
 	case *verbose:

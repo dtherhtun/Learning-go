@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dtherhtun/Learning-go/CliTools/todo"
+	"github.com/dtherhtun/Learning-go/CliTools/todo.v2"
 )
 
-const todoFileName = ".todo.json"
+var todoFileName = ".todo.json"
 
 func main() {
 	flag.Usage = func() {
@@ -23,6 +23,10 @@ func main() {
 	flag.Parse()
 	l := &todo.List{}
 
+	if os.Getenv("TODO_FILENAME") != "" {
+		todoFileName = os.Getenv("TODO_FILENAME")
+	}
+
 	if err := l.Get(todoFileName); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -30,11 +34,7 @@ func main() {
 
 	switch {
 	case *list:
-		for _, item := range *l {
-			if !item.Done {
-				fmt.Println(item.Task)
-			}
-		}
+		fmt.Print(l)
 	case *complete > 0:
 		if err := l.Complete(*complete); err != nil {
 			fmt.Fprintln(os.Stderr, err)
@@ -51,7 +51,7 @@ func main() {
 			os.Exit(1)
 		}
 	default:
-		fmt.Fprintln(os.Stderr, "Invalid option")
+		flag.Usage()
 		os.Exit(1)
 	}
 }
