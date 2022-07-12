@@ -1,4 +1,4 @@
-module github.com/dtherhtun/Learning-go/CliTools/workingFiles/mdp
+module github.com/dtherhtun/Learning-go/CliTools/workingFiles/mdp.v1
 
 go 1.17
 
