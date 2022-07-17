@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"flag"
 	"fmt"
@@ -10,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"strings"
 	"time"
 
 	"github.com/microcosm-cc/bluemonday"
@@ -38,31 +40,53 @@ type content struct {
 }
 
 func main() {
-	filename := flag.String("file", "", "Markdown file to preview")
+	ch := make(chan string)
+
+	file := flag.Bool("file", false, "Markdown file to preview")
 	skipPreview := flag.Bool("s", false, "Skip auto-preview")
 	tFname := flag.String("t", "", "Alternate template name")
 	flag.Parse()
+	var input []byte
 
-	if os.Getenv("MD_FILE_NAME") != "" {
-		*filename = os.Getenv("MD_FILE_NAME")
+	if os.Getenv("MD_FILE") != "" {
+		file, err := ioutil.ReadFile(os.Getenv("MD_FILE"))
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		input = file
 	}
 
-	if *filename == "" {
+	if *file {
+		if file := flag.Arg(0); file != "" {
+			data, err := ioutil.ReadFile(file)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				os.Exit(1)
+			}
+			input = data
+		} else {
+			go getMD(os.Stdin, ch)
+			data := <-ch
+			if data == "" && len(flag.Args()) < 1 {
+				fmt.Fprintln(os.Stderr, "file name can not be blank")
+				os.Exit(1)
+			}
+			input = []byte(data)
+		}
+	}
+	if len(input) == 0 {
 		flag.Usage()
 		os.Exit(1)
 	}
 
-	if err := run(*filename, *tFname, os.Stdout, *skipPreview); err != nil {
+	if err := run(input, *tFname, os.Stdout, *skipPreview); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 }
 
-func run(filename string, tFname string, out io.Writer, skipPreview bool) error {
-	input, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return err
-	}
+func run(input []byte, tFname string, out io.Writer, skipPreview bool) error {
 
 	htmlData, err := paraseContent(input, tFname)
 	if err != nil {
@@ -152,4 +176,30 @@ func preview(fname string) error {
 
 	time.Sleep(2 * time.Second)
 	return err
+}
+
+func getMD(r io.Reader, ch chan string) {
+
+	var data string
+	/*buf := new(bytes.Buffer)
+	buf.ReadFrom(r)
+	fmt.Println(buf.Bytes())*/
+
+	s := bufio.NewReader(r)
+
+	fmt.Println(s.ReadBytes('\n'))
+
+	for {
+		fmt.Println("Before readstring")
+		input, err := s.ReadString('\n')
+		fmt.Println("After readstring")
+		if err == io.EOF {
+			break
+		}
+		data += input
+	}
+
+	data = strings.TrimSuffix(data, "\n")
+
+	ch <- data
 }
