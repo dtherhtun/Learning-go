@@ -2,10 +2,12 @@ package main
 
 import (
 	"bytes"
+	"html/template"
 	"io/ioutil"
 	"os"
 	"strings"
 	"testing"
+	"time"
 )
 
 const (
@@ -15,6 +17,7 @@ const (
 )
 
 func TestParseContent(t *testing.T) {
+	var expected = new(bytes.Buffer)
 	input, err := ioutil.ReadFile(inputFile)
 	if err != nil {
 		t.Fatal(err)
@@ -24,13 +27,17 @@ func TestParseContent(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	expeced, err := ioutil.ReadFile(goldenFile)
+	tpl, err := template.ParseFiles(goldenFile)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if !bytes.Equal(expeced, result) {
-		t.Logf("golden:\n%s\n", expeced)
+	if err := tpl.Execute(expected, time.Now().Format("2006-01-02 15:04:05")); err != nil {
+		t.Fatal(err)
+	}
+
+	if !bytes.Equal(expected.Bytes(), result) {
+		t.Logf("golden:\n%s\n", expected.Bytes())
 		t.Logf("result:\n%s\n", result)
 		t.Error("Result content does not match golden file")
 	}
@@ -38,6 +45,7 @@ func TestParseContent(t *testing.T) {
 
 func TestRun(t *testing.T) {
 	var mockStdOut bytes.Buffer
+	var expected = new(bytes.Buffer)
 	if err := run(inputFile, "", &mockStdOut, true); err != nil {
 		t.Fatal(err)
 	}
@@ -49,13 +57,17 @@ func TestRun(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	expected, err := ioutil.ReadFile(goldenFile)
+	tpl, err := template.ParseFiles(goldenFile)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if !bytes.Equal(expected, result) {
-		t.Logf("golden:\n%s\n", expected)
+	if err := tpl.Execute(expected, time.Now().Format("2006-01-02 15:04:05")); err != nil {
+		t.Fatal(err)
+	}
+
+	if !bytes.Equal(expected.Bytes(), result) {
+		t.Logf("golden:\n%s\n", expected.Bytes())
 		t.Logf("result:\n%s\n", result)
 		t.Error("Result content does not match golden file")
 	}
