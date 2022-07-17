@@ -24,6 +24,7 @@ const (
 			<title>{{ .Title }} </title>
 		</head>
 		<body>
+		<h1>{{ .CreatedAt }}</h1>
 		{{ .Body }}
 		</body>
 	</html>
@@ -31,8 +32,9 @@ const (
 )
 
 type content struct {
-	Title string
-	Body  template.HTML
+	Title     string
+	CreatedAt string
+	Body      template.HTML
 }
 
 func main() {
@@ -104,8 +106,9 @@ func paraseContent(input []byte, tFname string) ([]byte, error) {
 	}
 
 	c := content{
-		Title: "Markdown Preview Tool",
-		Body:  template.HTML(body),
+		Title:     "Markdown Preview Tool",
+		CreatedAt: time.Now().Format("2006-01-02 15:04:05"),
+		Body:      template.HTML(body),
 	}
 
 	if err := t.Execute(&buffer, c); err != nil {
