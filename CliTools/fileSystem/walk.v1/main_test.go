@@ -68,5 +68,47 @@ func createTempDir(t *testing.T, files map[string]int) (dirname string, cleanup 
 }
 
 func TestRunDelExtension(t *testing.T) {
+	testCases := []struct {
+		name        string
+		cfg         config
+		extNoDelete string
+		nDelete     int
+		nNoDelete   int
+		expected    string
+	}{
+		{name: "DeleteExtensionNoMatch", cfg: config{ext: ".log", del: true}, extNoDelete: ".gz", nDelete: 0, nNoDelete: 10, expected: ""},
+		{name: "DeleteExtensionMatch", cfg: config{ext: ".log", del: true}, extNoDelete: "", nDelete: 10, nNoDelete: 0, expected: ""},
+		{name: "DeleteExtensionMixed", cfg: config{ext: ".log", del: true}, extNoDelete: ".gz", nDelete: 5, nNoDelete: 5, expected: ""},
+	}
 
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			var buffer bytes.Buffer
+
+			tempDir, cleanup := createTempDir(t, map[string]int{
+				tc.cfg.ext:     tc.nDelete,
+				tc.extNoDelete: tc.nNoDelete,
+			})
+			defer cleanup()
+
+			if err := run(tempDir, &buffer, tc.cfg); err != nil {
+				t.Fatal(err)
+			}
+
+			res := buffer.String()
+
+			if tc.expected != res {
+				t.Errorf("Expected %q, got %q instead\n", tc.expected, res)
+			}
+
+			fileLeft, err := ioutil.ReadDir(tempDir)
+			if err != nil {
+				t.Error(err)
+			}
+
+			if len(fileLeft) != tc.nNoDelete {
+				t.Errorf("Expected %d file left, got %d instead\n", tc.nNoDelete, len(fileLeft))
+			}
+		})
+	}
 }
