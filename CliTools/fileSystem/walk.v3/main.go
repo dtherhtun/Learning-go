@@ -28,6 +28,8 @@ func main() {
 	size := flag.Int64("size", 0, "Minimum file size")
 	flag.Parse()
 
+	fmt.Println(flag.Args())
+
 	var (
 		f   = os.Stdout
 		err error
