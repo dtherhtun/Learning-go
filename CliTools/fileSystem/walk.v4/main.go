@@ -7,10 +7,11 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type config struct {
-	ext     string
+	exts    Exts
 	size    int64
 	list    bool
 	del     bool
@@ -18,13 +19,22 @@ type config struct {
 	archive string
 }
 
+type Exts []string
+
+func (arr *Exts) String() string { return "" }
+func (arr *Exts) Set(value string) error {
+	*arr = append(*arr, strings.TrimSpace(value))
+	return nil
+}
+
 func main() {
+	var exts Exts
 	root := flag.String("root", ".", "Root directory to Start")
 	logFile := flag.String("log", "", "Log deletes to this file")
 	list := flag.Bool("list", false, "List files only")
 	archive := flag.String("archive", "", "Achive directory")
 	del := flag.Bool("del", false, "Delete files")
-	ext := flag.String("ext", "", "File extension to filter out")
+	flag.Var(&exts, "ext", "-ext .log -ext .sh ...")
 	size := flag.Int64("size", 0, "Minimum file size")
 	flag.Parse()
 
@@ -42,7 +52,7 @@ func main() {
 		defer f.Close()
 	}
 	c := config{
-		ext:     *ext,
+		exts:    exts,
 		size:    *size,
 		list:    *list,
 		del:     *del,
@@ -62,9 +72,11 @@ func run(root string, out io.Writer, cfg config) error {
 			if err != nil {
 				return err
 			}
-			if filterOut(path, cfg.ext, cfg.size, info) {
+
+			if filterOut(path, cfg.exts, cfg.size, info) {
 				return nil
 			}
+
 			if cfg.list {
 				return listFile(path, out)
 			}

@@ -17,19 +17,19 @@ func TestRun(t *testing.T) {
 		expected string
 	}{
 		{name: "NoFilter", root: "testdata",
-			cfg:      config{ext: "", size: 0, list: true},
+			cfg:      config{exts: []string{""}, size: 0, list: true},
 			expected: "testdata/dir.log\ntestdata/dir2/script.sh\n"},
 		{name: "FilterExtensionMatch", root: "testdata",
-			cfg:      config{ext: ".log", size: 0, list: true},
+			cfg:      config{exts: []string{".log"}, size: 0, list: true},
 			expected: "testdata/dir.log\n"},
 		{name: "FilterExtensionSizeMatch", root: "testdata",
-			cfg:      config{ext: ".log", size: 10, list: true},
+			cfg:      config{exts: []string{".log"}, size: 10, list: true},
 			expected: "testdata/dir.log\n"},
 		{name: "FilterExtensionSizeNoMatch", root: "testdata",
-			cfg:      config{ext: ".log", size: 20, list: true},
+			cfg:      config{exts: []string{".log"}, size: 20, list: true},
 			expected: ""},
 		{name: "FilterExtensionNoMatch", root: "testdata",
-			cfg:      config{ext: ".gz", size: 0, list: true},
+			cfg:      config{exts: []string{".gz"}, size: 0, list: true},
 			expected: ""},
 	}
 	for _, tc := range testCases {
@@ -76,9 +76,9 @@ func TestRunDelExtension(t *testing.T) {
 		nNoDelete   int
 		expected    string
 	}{
-		{name: "DeleteExtensionNoMatch", cfg: config{ext: ".log", del: true}, extNoDelete: ".gz", nDelete: 0, nNoDelete: 10, expected: ""},
-		{name: "DeleteExtensionMatch", cfg: config{ext: ".log", del: true}, extNoDelete: "", nDelete: 10, nNoDelete: 0, expected: ""},
-		{name: "DeleteExtensionMixed", cfg: config{ext: ".log", del: true}, extNoDelete: ".gz", nDelete: 5, nNoDelete: 5, expected: ""},
+		{name: "DeleteExtensionNoMatch", cfg: config{exts: []string{".log"}, del: true}, extNoDelete: ".gz", nDelete: 0, nNoDelete: 10, expected: ""},
+		{name: "DeleteExtensionMatch", cfg: config{exts: []string{".log"}, del: true}, extNoDelete: "", nDelete: 10, nNoDelete: 0, expected: ""},
+		{name: "DeleteExtensionMixed", cfg: config{exts: []string{".log"}, del: true}, extNoDelete: ".gz", nDelete: 5, nNoDelete: 5, expected: ""},
 	}
 
 	for _, tc := range testCases {
@@ -91,7 +91,7 @@ func TestRunDelExtension(t *testing.T) {
 			tc.cfg.wlog = &logBuffer
 
 			tempDir, cleanup := createTempDir(t, map[string]int{
-				tc.cfg.ext:     tc.nDelete,
+				tc.cfg.exts[0]: tc.nDelete,
 				tc.extNoDelete: tc.nNoDelete,
 			})
 			defer cleanup()
