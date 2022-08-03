@@ -16,11 +16,11 @@ func filterOut(path string, exts Exts, minSize int64, info os.FileInfo) bool {
 
 	checkExt := func(path string, exts Exts) bool {
 		for _, ext := range exts {
-			if ext != "" && ext != path {
-				return true
+			if ext != "" && ext == path {
+				return false
 			}
 		}
-		return false
+		return true
 	}(filepath.Ext(path), exts)
 
 	return checkExt
