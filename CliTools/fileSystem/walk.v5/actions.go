@@ -21,9 +21,26 @@ func checkExt(path string, exts Exts) bool {
 }
 
 func filterOut(path string, exts Exts, minSize int64, info os.FileInfo) bool {
+
 	if info.IsDir() || info.Size() < minSize {
 		return true
 	}
+
+	if len(exts) > 0 {
+		if checkExt(filepath.Ext(path), exts) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func filterOutWithDate(path string, exts Exts, minSize int64, dateBefore string, info os.FileInfo) bool {
+
+	if info.IsDir() || info.Size() < minSize || info.ModTime().Format("2006-01-02") != dateBefore || dateBefore == "" {
+		return true
+	}
+
 	if len(exts) > 0 {
 		if checkExt(filepath.Ext(path), exts) {
 			return true

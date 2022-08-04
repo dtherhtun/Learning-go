@@ -15,6 +15,7 @@ func filterOut(path, ext string, minSize int64, info os.FileInfo) bool {
 	}
 
 	if ext != "" && filepath.Ext(path) != ext {
+		fmt.Println("ext->",ext,"|","path->",path)
 		return true
 	}
 	return false
