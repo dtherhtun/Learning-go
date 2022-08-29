@@ -1,4 +1,4 @@
-// https://go.dev/play/p/JOISWO9gIki 
+// https://go.dev/play/p/JOISWO9gIki
 
 // You can edit this code!
 // Click here and start typing.
@@ -23,23 +23,29 @@ type scale struct {
 func main() {
 	var datas []data
 	test := [][]string{{"asc-app-c1", "500m", "2Gi"}, {"asc-api-c1", "1", "2Gi"}}
-	name := []string{"app", "cpu", "mem"}
-	m := make(map[string]string)
-	var datamap []map[string]string
+	//name := []string{"app", "cpu", "mem"}
+	//m := make(map[string]string)
+	//var datamap []map[string]string
 	for i := 0; i < len(test); i++ {
-		for j := 0; j < len(test[i]); j++ {
-			m[name[j]] = test[i][j]
+		//for j := 0; j < len(test[i]); j++ {
+		//	m[name[j]] = test[i][j]
+		//}
+		temp := data{
+			App: test[i][0],
+			Cpu: test[i][1],
+			Mem: test[i][2],
 		}
-		datamap = append(datamap, m)
+		//datamap = append(datamap, m)
+		datas = append(datas, temp)
 	}
-	for _, v := range datamap {
+	/*for _, v := range datamap {
 		temp := data{
 			App: v["app"],
 			Cpu: v["cpu"],
 			Mem: v["mem"],
 		}
 		datas = append(datas, temp)
-	}
+	}*/
 	aeiou := scale{
 		Data:   datas,
 		Commit: "scale up",
@@ -48,4 +54,3 @@ func main() {
 	u, _ := json.Marshal(aeiou)
 	fmt.Println(string(u))
 }
-
