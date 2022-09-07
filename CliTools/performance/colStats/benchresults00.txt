@@ -1,0 +1,7 @@
+goos: darwin
+goarch: amd64
+pkg: github.com/dtherhtun/Learning-go/CliTools/performance/colStats
+cpu: Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz
+BenchmarkRun-16    	      10	 531416233 ns/op
+PASS
+ok  	github.com/dtherhtun/Learning-go/CliTools/performance/colStats	6.837s
