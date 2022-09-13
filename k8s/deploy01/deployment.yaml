@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    business_fn: console
+    cluster: c1
+    moleculer/metrics_scraped: "true"
+    registry: 826057481178.dkr.ecr.ap-southeast-1.amazonaws.com/eko-messaging-service
+    version: 4.38.0
+  labels:
+    app: asc-admin-c1
+  name: asc-admin-c1
+  namespace: upstra-next-production
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 0
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: asc-admin
+  strategy:
+    rollingUpdate:
+      maxSurge: 20%
+      maxUnavailable: 0%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        business_fn: console
+        cluster: c1
+        moleculer/metrics_scraped: "true"
+        registry: 826057481178.dkr.ecr.ap-southeast-1.amazonaws.com/eko-messaging-service
+        version: 4.38.0
+      labels:
+        app: asc-admin
+        pool: fargate
+    spec:
+      affinity: {}
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: asc-admin-c1
+            - secretRef:
+                name: neo4j-credential
+          image: 826057481178.dkr.ecr.ap-southeast-1.amazonaws.com/eko-messaging-service:4.38.0
+          imagePullPolicy: Always
+          livenessProbe:
+            exec:
+              command:
+                - ls
+            failureThreshold: 3
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+          name: asc-admin-c1
+          ports:
+            - containerPort: 3000
+              name: asc-admin-c1
+              protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+                - ls
+            failureThreshold: 3
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+          resources:
+            requests:
+              cpu: "1"
+              memory: 2Gi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: adm-app-aws-service
+      serviceAccountName: adm-app-aws-service
+      terminationGracePeriodSeconds: 30
