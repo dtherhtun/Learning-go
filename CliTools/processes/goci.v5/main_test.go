@@ -25,15 +25,15 @@ func TestRun(t *testing.T) {
 		expErr   error
 		setupGit bool
 	}{
-		{name: "success", proj: "../../../../testdata/tool/",
+		{name: "success", proj: "./testdata/tool/",
 			out: "Go Build: SUCCESS\n" +
 				"Go Test: SUCCESS\n" +
 				"Gofmt: SUCCESS\n" +
 				"Git Push: SUCCESS\n",
 			expErr: nil, setupGit: true},
-		{name: "fail", proj: "../../../../testdata/toolErr/", out: "",
+		{name: "fail", proj: "./testdata/toolErr/", out: "",
 			expErr: &stepErr{step: "go build"}, setupGit: false},
-		{name: "failFormat", proj: "../../../../testdata/toolFmtErr", out: "",
+		{name: "failFormat", proj: "./testdata/toolFmtErr", out: "",
 			expErr: &stepErr{step: "go fmt"}, setupGit: false},
 	}
 
