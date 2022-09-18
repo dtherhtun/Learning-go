@@ -99,7 +99,7 @@ func setupGit(t *testing.T, proj string) func() {
 		{[]string{"init"}, projPath, nil},
 		{[]string{"remote", "add", "origin", remoteURI}, projPath, nil},
 		{[]string{"add", "."}, projPath, nil},
-		{[]string{"commit", "-m"}, projPath, []string{
+		{[]string{"commit", "-m", "test"}, projPath, []string{
 			"GIT_COMMITTER_NAME=test",
 			"GIT_COMMITTER_EMAIL=test@example.com",
 			"GIT_AUTHOR_NAME=test",
@@ -114,7 +114,6 @@ func setupGit(t *testing.T, proj string) func() {
 		if g.env != nil {
 			gitCmd.Env = append(os.Environ(), g.env...)
 		}
-
 		if err := gitCmd.Run(); err != nil {
 			t.Fatal(err)
 		}
