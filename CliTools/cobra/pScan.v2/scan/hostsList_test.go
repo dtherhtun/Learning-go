@@ -2,7 +2,7 @@ package scan_test
 
 import (
 	"errors"
-	"github.com/dtherhtun/Learning-go/CliTools/cobra/pScan/scan"
+	"github.com/dtherhtun/Learning-go/CliTools/cobra/pScan.v2/scan"
 	"os"
 	"testing"
 )
