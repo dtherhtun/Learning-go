@@ -8,7 +8,7 @@ func main() {
 	itemThree := []int{3, 4, 5, 2, 1, 7, 8, -1, -3}
 
 	fmt.Println(selectionSort(itemOne))
-	fmt.Println(selectionSort(itemTwo))
+	fmt.Println(bubbleSort(itemTwo))
 	fmt.Println(selectionSortRange(itemThree))
 }
 
@@ -34,6 +34,19 @@ func selectionSortRange(items []int) []int {
 		for j, _ := range items {
 			if items[j] > items[min] {
 				items[j], items[min] = items[min], items[j]
+			}
+		}
+	}
+
+	return items
+}
+
+func bubbleSort(items []int) []int {
+
+	for i := 0; i < len(items); i++ {
+		for j := 0; j < len(items)-1; j++ {
+			if items[j] > items[j+1] {
+				items[j], items[j+1] = items[j+1], items[j]
 			}
 		}
 	}
