@@ -24,18 +24,11 @@ func diagonalDifference(arr [][]int32) int32 {
 		for j := 0; j < len(arr); j++ {
 			if i == j {
 				left += arr[i][j]
-				fmt.Println("lij ", i, j)
-				fmt.Println("l ", arr[i][j])
-				fmt.Println("left ", left)
 			}
 			if i+j == len(arr)-1 {
 				right += arr[i][j]
-				fmt.Println("rij ", i, j)
-				fmt.Println("r ", arr[i][j])
-				fmt.Println("right ", right)
 			}
 		}
-		fmt.Println("-------")
 	}
 
 	if left-right < 0 {
