@@ -5,12 +5,13 @@ import "fmt"
 func main() {
 	itemOne := []int{10, 6, 2, 1, 5, 8, 3, 4, 7, 9}
 	itemTwo := []int{3, 4, 5, 2, 1}
-	itemThree := []int{3, 4, 5, 2, 1, 7, 8, -1, -3}
+	itemThree := []int{-1, 10, 3, 4, 5, 2, 1, 7, 8, -1, -3}
+	itemfour := []int{22, 10, 6, 2, 1, 5, 8, 3, 4, 7, 9, 100, 30, 70, -1}
 
 	fmt.Println(selectionSort(itemOne))
 	fmt.Println(bubbleSort(itemTwo))
 	fmt.Println(selectionSortRange(itemThree))
-	fmt.Println(mergeSort(itemThree))
+	fmt.Println(mergeSort(itemfour))
 }
 
 func selectionSort(items []int) []int {
@@ -71,7 +72,6 @@ func merge(left, right []int) []int {
 	i := 0
 	j := 0
 
-	//fmt.Println("before sort left->", left, "before sort right->", right, "before sort result->", results)
 	for i < len(left) && j < len(right) {
 		if left[i] < right[j] {
 			results = append(results, left[i])
@@ -89,8 +89,6 @@ func merge(left, right []int) []int {
 	for ; j < len(right); j++ {
 		results = append(results, right[j])
 	}
-
-	//fmt.Println("after sort left->", left, "after sort right->", right, "after sort result->", results)
 
 	return results
 }
