@@ -1,0 +1,31 @@
+goos: darwin
+goarch: amd64
+pkg: github.com/dtherhtun/Learning-go/dsa/Sorting
+cpu: Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz
+BenchmarkMergeSort/input_size_10-16         	 4319343	       353.6 ns/op
+BenchmarkMergeSort/input_size_10-16         	 2791563	       446.4 ns/op
+BenchmarkMergeSort/input_size_10-16         	 2115390	       659.4 ns/op
+BenchmarkMergeSort/input_size_10-16         	 3146602	       324.2 ns/op
+BenchmarkMergeSort/input_size_10-16         	 3581102	       421.5 ns/op
+BenchmarkMergeSort/input_size_100-16        	  186268	      7386 ns/op
+BenchmarkMergeSort/input_size_100-16        	  188925	      6190 ns/op
+BenchmarkMergeSort/input_size_100-16        	  203362	      6601 ns/op
+BenchmarkMergeSort/input_size_100-16        	  214855	      6093 ns/op
+BenchmarkMergeSort/input_size_100-16        	  176722	      6551 ns/op
+BenchmarkMergeSort/input_size_1000-16       	   15879	     78391 ns/op
+BenchmarkMergeSort/input_size_1000-16       	   16051	     78421 ns/op
+BenchmarkMergeSort/input_size_1000-16       	   15612	     71483 ns/op
+BenchmarkMergeSort/input_size_1000-16       	   14503	     78420 ns/op
+BenchmarkMergeSort/input_size_1000-16       	   15603	     74254 ns/op
+BenchmarkMergeSort/input_size_10000-16      	    1348	    882967 ns/op
+BenchmarkMergeSort/input_size_10000-16      	    1364	    887011 ns/op
+BenchmarkMergeSort/input_size_10000-16      	    1372	    883668 ns/op
+BenchmarkMergeSort/input_size_10000-16      	    1362	    896511 ns/op
+BenchmarkMergeSort/input_size_10000-16      	    1278	    867983 ns/op
+BenchmarkMergeSort/input_size_100000-16     	     121	   9559521 ns/op
+BenchmarkMergeSort/input_size_100000-16     	     126	   9650289 ns/op
+BenchmarkMergeSort/input_size_100000-16     	     123	   9976897 ns/op
+BenchmarkMergeSort/input_size_100000-16     	     121	   9331077 ns/op
+BenchmarkMergeSort/input_size_100000-16     	     122	   9763858 ns/op
+PASS
+ok  	github.com/dtherhtun/Learning-go/dsa/Sorting	44.658s
