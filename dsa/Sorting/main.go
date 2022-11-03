@@ -1,17 +1,21 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	itemOne := []int{10, 6, 2, 1, 5, 8, 3, 4, 7, 9}
 	itemTwo := []int{3, 4, 5, 2, 1}
 	itemThree := []int{-1, 10, 3, 4, 5, 2, 1, 7, 8, -1, -3}
 	itemfour := []int{22, 10, 6, 2, 1, 5, 8, 3, 4, 7, 9, 100, 30, 70, -1}
+	itemFive := []int{7, 2, 1, 6, 8, 5, 3, 4}
 
 	fmt.Println(selectionSort(itemOne))
 	fmt.Println(bubbleSort(itemTwo))
 	fmt.Println(selectionSortRange(itemThree))
 	fmt.Println(mergeSort(itemfour))
+	fmt.Println("quickSort->", quickSort(itemFive, 0, len(itemFive)-1))
 }
 
 func selectionSort(items []int) []int {
@@ -91,4 +95,28 @@ func merge(left, right []int) []int {
 	}
 
 	return results
+}
+
+func partation(items []int, low, high int) ([]int, int) {
+	pivot := items[high]
+	i := low
+	for j := low; j < high; j++ {
+		if items[j] < pivot {
+			items[i], items[j] = items[j], items[i]
+			i++
+		}
+	}
+	items[i], items[high] = items[high], items[i]
+
+	return items, i
+}
+
+func quickSort(items []int, low, high int) []int {
+	if low < high {
+		var p int
+		items, p = partation(items, low, high)
+		items = quickSort(items, low, p-1)
+		items = quickSort(items, p+1, high)
+	}
+	return items
 }
