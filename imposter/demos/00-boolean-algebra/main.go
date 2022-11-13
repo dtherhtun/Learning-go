@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/olekukonko/tablewriter"
 	"os"
 	"strconv"
+
+	"github.com/olekukonko/tablewriter"
 )
 
 func main() {
@@ -28,7 +29,10 @@ func main() {
 	trueTable("NOR", nor)
 	trueTable("NAND", nand)
 	trueTable("ADDITION", add)
-	trueTable("ADDLOGIC", addLogical)
+	trueTable("HalfAdder", halfAdder)
+	trueTable("FullAddler", fullAdder)
+	trueTable("HalfNadder", halfNadder)
+	trueTable("FullAdder2", fullAdder2)
 }
 
 type operation func(x, y int) string
@@ -84,6 +88,30 @@ func add(x, y int) string {
 	return fmt.Sprintf("%02b", x+y)
 }
 
-func addLogical(x, y int) string {
+func halfAdder(x, y int) string {
 	return and(x, y) + xor(x, y)
+}
+func halfNadder(x, y int) string {
+	return or(x, y) + equiv(x, y)
+}
+func fullAdder(x, y int) string {
+	carry := 1
+
+	firstStep := halfAdder(x, y)
+	firstRes0, _ := strconv.Atoi(firstStep[:1])
+	firstRes1, _ := strconv.Atoi(firstStep[1:])
+	secondStep := halfAdder(firstRes1, carry)
+	secondRes0, _ := strconv.Atoi(secondStep[:1])
+	secondRes1, _ := strconv.Atoi(secondStep[1:])
+
+	leftResult := or(firstRes0, secondRes0)
+	rightResult := secondRes1
+	return leftResult + strconv.Itoa(rightResult)
+}
+func fullAdder2(x, y int) string {
+	carry := 0
+	if carry == 1 {
+		return halfNadder(x, y)
+	}
+	return halfAdder(x, y)
 }
