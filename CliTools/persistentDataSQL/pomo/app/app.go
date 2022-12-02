@@ -2,12 +2,14 @@ package app
 
 import (
 	"context"
-	"github.com/dtherhtun/Learning-go/CliTools/interactiveTools/pomo/pomodoro"
+	"image"
+	"time"
+
 	"github.com/mum4k/termdash"
 	"github.com/mum4k/termdash/terminal/tcell"
 	"github.com/mum4k/termdash/terminal/terminalapi"
-	"image"
-	"time"
+
+	"github.com/dtherhtun/Learning-go/CliTools/interactiveTools/pomo/pomodoro"
 )
 
 type App struct {
@@ -34,7 +36,11 @@ func New(config *pomodoro.IntervalConfig) (*App, error) {
 	if err != nil {
 		return nil, err
 	}
-	b, err := newButtonSet(ctx, config, w, redrawCh, errorCh)
+	s, err := newSummary(ctx, config, redrawCh, errorCh)
+	if err != nil {
+		return nil, err
+	}
+	b, err := newButtonSet(ctx, config, w, s, redrawCh, errorCh)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +50,7 @@ func New(config *pomodoro.IntervalConfig) (*App, error) {
 		return nil, err
 	}
 
-	c, err := newGrid(b, w, term)
+	c, err := newGrid(b, w, s, term)
 	if err != nil {
 		return nil, err
 	}

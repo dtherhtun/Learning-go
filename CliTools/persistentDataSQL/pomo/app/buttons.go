@@ -3,9 +3,11 @@ package app
 import (
 	"context"
 	"fmt"
-	"github.com/dtherhtun/Learning-go/CliTools/interactiveTools/pomo/pomodoro"
+
 	"github.com/mum4k/termdash/cell"
 	"github.com/mum4k/termdash/widgets/button"
+
+	"github.com/dtherhtun/Learning-go/CliTools/interactiveTools/pomo/pomodoro"
 )
 
 type buttonSet struct {
@@ -13,7 +15,7 @@ type buttonSet struct {
 	btPause *button.Button
 }
 
-func newButtonSet(ctx context.Context, config *pomodoro.IntervalConfig, w *widgets, redrawCh chan<- bool, errorCh chan<- error) (*buttonSet, error) {
+func newButtonSet(ctx context.Context, config *pomodoro.IntervalConfig, w *widgets, s *summary, redrawCh chan<- bool, errorCh chan<- error) (*buttonSet, error) {
 	startInterval := func() {
 		i, err := pomodoro.GetInterval(config)
 		errorCh <- err
@@ -28,6 +30,7 @@ func newButtonSet(ctx context.Context, config *pomodoro.IntervalConfig, w *widge
 
 		end := func(i pomodoro.Interval) {
 			w.update([]int{}, "", "Nothing running...", "", redrawCh)
+			s.update(redrawCh)
 		}
 
 		periodic := func(i pomodoro.Interval) {
