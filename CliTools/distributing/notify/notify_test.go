@@ -4,7 +4,10 @@ package notify
 
 import (
 	"fmt"
+	"os"
+	"os/exec"
 	"runtime"
+	"strings"
 	"testing"
 )
 
@@ -67,5 +70,45 @@ func TestSeverityString(t *testing.T) {
 				t.Errorf("Expected %q,got %q instead\n", tc.exp, sev)
 			}
 		})
+	}
+}
+
+func mockCmd(exe string, args ...string) *exec.Cmd {
+	cs := []string{"-test.run=TestHelperProcess"}
+	cs = append(cs, exe)
+	cs = append(cs, args...)
+
+	cmd := exec.Command(os.Args[0], cs...)
+	cmd.Env = []string{"GO_WANT_HELPER_PROCESS=1"}
+	return cmd
+}
+
+func TestHelperProcess(t *testing.T) {
+	if os.Getenv("GO_WANT_HELPER_PROCESS") != "1" {
+		return
+	}
+	cmdName := ""
+	switch runtime.GOOS {
+	case "linux":
+		cmdName = "notify-send"
+	case "darwin":
+		cmdName = "terminal-notifier"
+	case "windows":
+		cmdName = "powershell"
+	}
+	if strings.Contains(os.Args[2], cmdName) {
+		os.Exit(0)
+	}
+	os.Exit(1)
+}
+
+func TestSend(t *testing.T) {
+	n := New("test title", "test msg", SeverityNormal)
+
+	command = mockCmd
+
+	err := n.Send()
+	if err != nil {
+		t.Error(err)
 	}
 }
