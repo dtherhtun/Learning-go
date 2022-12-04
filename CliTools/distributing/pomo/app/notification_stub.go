@@ -1,7 +1,7 @@
-//go:build containers && disable_notification
+//go:build containers || disable_notification
 
 package app
 
-func send_notification(msg string) {
+func sendNotification(msg string) {
 	return
 }
