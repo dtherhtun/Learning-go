@@ -1,3 +1,4 @@
+# https://appliedgo.com/blog/how-to-do-escape-analysis
 SHELL := /bin/bash
 
 ans01:
