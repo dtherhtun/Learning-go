@@ -14,3 +14,6 @@ ans01a:
 
 ans02a:
 	go run -gcflags="-m -l" analysis02/main.go
+
+ans03:
+	go run -gcflags="-m -m" analysis03/main.go
