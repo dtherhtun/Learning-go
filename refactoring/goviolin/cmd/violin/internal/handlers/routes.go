@@ -16,10 +16,10 @@ func NewMux(log *log.Logger) *http.ServeMux {
 
 	base := Base{log: log}
 	mux.HandleFunc("/", base.Home)
-	//mux.HandleFunc("/scale", Scale)
-	//mux.HandleFunc("/scaleshow", ScaleShow)
-	//mux.HandleFunc("/duets", Duets)
-	//mux.HandleFunc("/duetshow", DuetShow)
+	mux.HandleFunc("/scale", base.Scale)
+	mux.HandleFunc("/scaleshow", base.ScaleShow)
+	mux.HandleFunc("/duets", base.Duet)
+	mux.HandleFunc("/duetshow", base.DuetShow)
 
 	return mux
 }
