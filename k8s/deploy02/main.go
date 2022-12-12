@@ -2,14 +2,16 @@ package main
 
 import (
 	"fmt"
-	appsv1 "k8s.io/api/apps/v1"
-	corev1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
-	"k8s.io/cli-runtime/pkg/printers"
-	"k8s.io/client-go/kubernetes/scheme"
 	"log"
 	"os"
 	"strings"
+
+	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/cli-runtime/pkg/printers"
+	"k8s.io/client-go/kubernetes/scheme"
 )
 
 func main() {
@@ -80,7 +82,58 @@ func UpdateCPU(data []byte, fname string) {
 	mydeployment.Spec.Template.Spec.Containers[0].Resources.Requests[corev1.ResourceMemory] = *resource.NewQuantity(5*1024*1024*1024, resource.BinarySI)
 	newFile, _ := os.Create(fname)
 	//manifest, _ := os.Open(fname)
-	y := printers.YAMLPrinter{}
+	mydeployment.Status = appsv1.DeploymentStatus{}
+	p := NewJSONYamlPrintFlags(true)
+	printer, _ := p.ToPrinter("yaml")
+	//y := printers.YAMLPrinter{}
 	defer newFile.Close()
-	y.PrintObj(obj, newFile)
+	printer.PrintObj(obj, newFile)
+
+}
+
+func NewJSONYamlPrintFlags(smf bool) *JSONYamlPrintFlags {
+	return &JSONYamlPrintFlags{
+		showManagedFields: smf,
+	}
+}
+
+type JSONYamlPrintFlags struct {
+	showManagedFields bool
+}
+
+func newOpt() printers.PrintOptions {
+	return printers.PrintOptions{
+		NoHeaders:        false,
+		WithNamespace:    true,
+		WithKind:         true,
+		Wide:             true,
+		ShowLabels:       true,
+		Kind:             schema.GroupKind{},
+		ColumnLabels:     nil,
+		SortBy:           "",
+		AllowMissingKeys: false,
+	}
+}
+
+// ToPrinter receives an outputFormat and returns a printer capable of
+// handling --output=(yaml|json) printing.
+// Returns false if the specified outputFormat does not match a supported format.
+// Supported Format types can be found in pkg/printers/printers.go
+func (f *JSONYamlPrintFlags) ToPrinter(outputFormat string) (printers.ResourcePrinter, error) {
+	var printer printers.ResourcePrinter
+
+	outputFormat = strings.ToLower(outputFormat)
+	switch outputFormat {
+	case "json":
+		printer = &printers.JSONPrinter{}
+	case "yaml":
+		printer = &printers.YAMLPrinter{}
+	default:
+		return nil, fmt.Errorf("cannot print")
+	}
+
+	if !f.showManagedFields {
+		printer = &printers.OmitManagedFieldsPrinter{Delegate: printer}
+	}
+	return printer, nil
 }
