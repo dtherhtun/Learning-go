@@ -56,19 +56,17 @@ func (b *Base) Scale(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// ScaleShow handles post calls for the scale page
+// ScaleShow handles POST calls for the scale page
 func (b *Base) ScaleShow(w http.ResponseWriter, r *http.Request) {
 	b.log.Printf("%s %s -> %s", r.Method, r.URL.Path, r.RemoteAddr)
 
-	//populate the default ScaleOptions, PitchOptions, KeyOptions, OctaveOptions for scales and arpeggios
 	sOptions, pOptions, kOptions, oOptions := render.SetDefaultScaleOptions()
 
-	r.ParseForm() //r is url.Values which is a map[string][]string
-
+	r.ParseForm()
 	var svalues []string
-	for _, values := range r.Form { // range over map
-		for _, value := range values { // range over []string
-			svalues = append(svalues, value) // stick each value in a slice I know the name of
+	for _, values := range r.Form {
+		for _, value := range values {
+			svalues = append(svalues, value)
 		}
 	}
 
