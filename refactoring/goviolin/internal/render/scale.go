@@ -61,7 +61,6 @@ func SetScaleOptions(scale string) []Option {
 			},
 		}
 	case "Arpeggio":
-		// If arpeggio is selected set arpeggio isChecked to true and scale isChecked to false.
 		options = []Option{
 			{
 				Name:       "Scale",
@@ -77,6 +76,46 @@ func SetScaleOptions(scale string) []Option {
 				IsChecked:  true,
 				Text:       "Arpeggios",
 			},
+		}
+	}
+
+	return options
+}
+
+// SetPitchOptions sets the pitch options base on the specified pitch.
+func SetPitchOptions(pitch string) []Option {
+	var options []Option
+
+	switch pitch {
+	case "Major":
+		options = []Option{
+			{Name: "Pitch", Value: "Major", IsDisabled: false, IsChecked: true, Text: "Major"},
+			{Name: "Pitch", Value: "Minor", IsDisabled: false, IsChecked: false, Text: "Minor"},
+		}
+	case "Minor":
+		options = []Option{
+			{"Pitch", "Major", false, false, "Major"},
+			{"Pitch", "Minor", false, true, "Minor"},
+		}
+	}
+
+	return options
+}
+
+// SetOctaveOptions sets the pitch options base on the specified pitch.
+func SetOctaveOptions(octave string) []Option {
+	var options []Option
+
+	switch octave {
+	case "1":
+		options = []Option{
+			{"Octave", "1", false, true, "1 Octave"},
+			{"Octave", "2", false, false, "2 Octave"},
+		}
+	case "2":
+		options = []Option{
+			{"Octave", "1", false, false, "1 Octave"},
+			{"Octave", "2", false, true, "2 Octave"},
 		}
 	}
 

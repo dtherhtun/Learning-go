@@ -75,32 +75,8 @@ func (b *Base) ScaleShow(w http.ResponseWriter, r *http.Request) {
 	// sOptions, pOptions, kOptions, oOptions := render.SetDefaultScaleOptions()
 	keyOptions := render.SetKeyOptions(key)
 	scaleOptions := render.SetScaleOptions(scale)
-
-	// Set pitch options
-	if pitch == "Major" {
-		pOptions = []render.ScaleOptions{ // if major was selected, set major isChecked to true and minor isChecked to false
-			render.ScaleOptions{"Pitch", "Major", false, true, "Major"},
-			render.ScaleOptions{"Pitch", "Minor", false, false, "Minor"},
-		}
-	} else {
-		pOptions = []render.ScaleOptions{ // if minor was selected, set minor isChecked to true and major isChecked to false
-			render.ScaleOptions{"Pitch", "Major", false, false, "Major"},
-			render.ScaleOptions{"Pitch", "Minor", false, true, "Minor"},
-		}
-	}
-
-	// Set octave options
-	if octave == "1" {
-		oOptions = []render.ScaleOptions{
-			render.ScaleOptions{"Octave", "1", false, true, "1 Octave"},
-			render.ScaleOptions{"Octave", "2", false, false, "2 Octave"},
-		}
-	} else {
-		oOptions = []render.ScaleOptions{
-			render.ScaleOptions{"Octave", "1", false, false, "1 Octave"},
-			render.ScaleOptions{"Octave", "2", false, true, "2 Octave"},
-		}
-	}
+	pitchOptions := render.SetPitchOptions(pitch)
+	octaveOptions := render.SetOctaveOptions(octave)
 
 	// work out what the actual key is and set its value
 	if pitch == "Major" {
