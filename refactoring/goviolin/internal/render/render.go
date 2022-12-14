@@ -6,8 +6,8 @@ import (
 	"net/http"
 )
 
-// ScaleOptions represents the options for generating content.
-type ScaleOptions struct {
+// Option represents the options for generating content.
+type Option struct {
 	Name       string
 	Value      string
 	IsDisabled bool
@@ -31,11 +31,11 @@ type PageVars struct {
 	DuetAudio2    string
 	LeftLabel     string
 	RightLabel    string
-	ScaleOptions  []ScaleOptions
-	DuetOptions   []ScaleOptions
-	PitchOptions  []ScaleOptions
-	KeyOptions    []ScaleOptions
-	OctaveOptions []ScaleOptions
+	Scales        []Option
+	Duets         []Option
+	Pitches       []Option
+	Keys          []Option
+	Octaves       []Option
 }
 
 // Render generates the html for any given web page.

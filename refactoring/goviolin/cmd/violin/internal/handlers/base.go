@@ -31,23 +31,23 @@ func (b *Base) Home(w http.ResponseWriter, r *http.Request) {
 func (b *Base) Scale(w http.ResponseWriter, r *http.Request) {
 	b.log.Printf("%s %s -> %s", r.Method, r.URL.Path, r.RemoteAddr)
 
-	sOptions, pOptions, kOptions, oOptions := render.SetDefaultScaleOptions()
+	scale, pitch, key, octave := render.SetDefaultOptions()
 
 	pv := render.PageVars{
-		Title:         "Practice Scales and Arpeggios", // default scale initially displayed is A Major
-		Scalearp:      "Scale",
-		Pitch:         "Major",
-		Key:           "A",
-		ScaleImgPath:  "img/scale/major/a1.png",
-		GifPath:       "",
-		AudioPath:     "mp3/scale/major/a1.mp3",
-		AudioPath2:    "mp3/drone/a1.mp3",
-		LeftLabel:     "Listen to Major scale",
-		RightLabel:    "Listen to Drone",
-		ScaleOptions:  sOptions,
-		PitchOptions:  pOptions,
-		KeyOptions:    kOptions,
-		OctaveOptions: oOptions,
+		Title:        "Practice Scales and Arpeggios",
+		Scalearp:     "Scale",
+		Pitch:        "Major",
+		Key:          "A",
+		ScaleImgPath: "img/scale/major/a1.png",
+		GifPath:      "",
+		AudioPath:    "mp3/scale/major/a1.mp3",
+		AudioPath2:   "mp3/drone/a1.mp3",
+		LeftLabel:    "Listen to Major scale",
+		RightLabel:   "Listen to Drone",
+		Scales:       scale,
+		Pitches:      pitch,
+		Keys:         key,
+		Octaves:      octave,
 	}
 
 	if err := render.Render(w, "scale.html", pv); err != nil {
@@ -60,58 +60,21 @@ func (b *Base) Scale(w http.ResponseWriter, r *http.Request) {
 func (b *Base) ScaleShow(w http.ResponseWriter, r *http.Request) {
 	b.log.Printf("%s %s -> %s", r.Method, r.URL.Path, r.RemoteAddr)
 
-	sOptions, pOptions, kOptions, oOptions := render.SetDefaultScaleOptions()
-
+	// TODO: write a function to handle errors and missing data
 	r.ParseForm()
-	var svalues []string
-	for _, values := range r.Form {
-		for _, value := range values {
-			svalues = append(svalues, value)
-		}
-	}
+	pitch := r.Form["Pitch"][0]
+	octave := r.Form["Octave"][0]
+	scale := r.Form["Scale"][0]
+	key := r.Form["Key"][0]
 
-	scalearp, key, pitch, octave, leftlabel, rightlabel := "", "", "", "", "", ""
+	// TODO: Validate we even need to run this.
+	var sOptions []render.Option
+	var pOptions []render.Option
+	var oOptions []render.Option
 
-	// the slice of values return by the request can be arranged in any order
-	// so identify selected scale / arpeggio, pitch, key and octave and store values in variables for later use.
-	for i := 0; i < 4; i++ {
-		switch svalues[i] {
-		case "Major":
-			pitch = svalues[i]
-		case "Minor":
-			pitch = svalues[i]
-		case "1":
-			octave = svalues[i]
-		case "2":
-			octave = svalues[i]
-		case "Scale":
-			scalearp = svalues[i]
-		case "Arpeggio":
-			scalearp = svalues[i]
-		default:
-			key = svalues[i]
-		}
-	}
-
-	// Update options based on the user's selection
-
-	// Set key options - set isChecked true for selected key and false for all other keys
-	kOptions = render.SetKeyOptions(key)
-
-	// Set scale options
-	if scalearp == "Scale" {
-		// if scale is selected set scale isChecked to true and arpeggio isChecked to false
-		sOptions = []render.ScaleOptions{
-			render.ScaleOptions{"Scalearp", "Scale", false, true, "Scales"},
-			render.ScaleOptions{"Scalearp", "Arpeggio", false, false, "Arpeggios"},
-		}
-	} else {
-		// if arpeggio is selected set arpeggio isChecked to true and scale isChecked to false
-		sOptions = []render.ScaleOptions{
-			render.ScaleOptions{"Scalearp", "Scale", false, false, "Scales"},
-			render.ScaleOptions{"Scalearp", "Arpeggio", false, true, "Arpeggios"},
-		}
-	}
+	// sOptions, pOptions, kOptions, oOptions := render.SetDefaultScaleOptions()
+	keyOptions := render.SetKeyOptions(key)
+	scaleOptions := render.SetScaleOptions(scale)
 
 	// Set pitch options
 	if pitch == "Major" {
@@ -151,6 +114,9 @@ func (b *Base) ScaleShow(w http.ResponseWriter, r *http.Request) {
 			key = key[:2]
 		}
 	}
+
+	var leftlabel string
+	var rightlabel string
 
 	// Set the labels, Major have a scale and a drone, while minor have melodic and harmonic minor scales
 	if pitch == "Major" {
@@ -259,7 +225,7 @@ func (b *Base) Duet(w http.ResponseWriter, r *http.Request) {
 	b.log.Printf("%s %s -> %s", r.Method, r.URL.Path, r.RemoteAddr)
 
 	// define default duet options
-	dOptions := []render.ScaleOptions{
+	dOptions := []render.Option{
 		render.ScaleOptions{"Duet", "G Major", false, true, "G Major"},
 		render.ScaleOptions{"Duet", "D Major", false, false, "D Major"},
 		render.ScaleOptions{"Duet", "A Major", false, false, "A Major"},
