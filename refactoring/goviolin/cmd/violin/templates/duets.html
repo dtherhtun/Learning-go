@@ -27,7 +27,7 @@
   <form action="/duetshow" method="post">
 
       <div class="duetselect">
-       {{range .DuetOptions}}
+       {{range .Duets}}
          <input type="radio" name={{.Name}} value={{.Value}} {{if .IsDisabled}} disabled=true {{end}} {{if .IsChecked}}checked{{end}}> {{.Text}}
        {{end}}<br>
       </div>

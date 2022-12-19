@@ -27,22 +27,22 @@
   <form action="/scaleshow" method="post">
 
       <div class="scalearpselect">
-       {{range .ScaleOptions}}
+       {{range .Scales}}
          <input type="radio" name={{.Name}} value={{.Value}} {{if .IsDisabled}} disabled=true {{end}} {{if .IsChecked}}checked{{end}}> {{.Text}}
        {{end}}<br>
       </div>
       <div class="pitchselect">
-       {{range .PitchOptions}}
+       {{range .Pitches}}
          <input type="radio" name={{.Name}} value={{.Value}} {{if .IsDisabled}} disabled=true {{end}} {{if .IsChecked}}checked{{end}}> {{.Text}}
        {{end}}
       </div>
       <div class="keyselect">
-        {{range .KeyOptions}}
+        {{range .Keys}}
           <input type="radio" name={{.Name}} value={{.Value}} {{if .IsDisabled}} disabled=true {{end}} {{if .IsChecked}}checked{{end}}> {{.Text}}
         {{end}}
       </div>
       <div class="octaveselect">
-        {{range .OctaveOptions}}
+        {{range .Octaves}}
           <input type="radio" name={{.Name}} value={{.Value}} {{if .IsDisabled}} disabled=true {{end}} {{if .IsChecked}}checked{{end}}> {{.Text}}
         {{end}}
       </div>
@@ -133,7 +133,7 @@ $(document).ready(function() {
   });
 });
 $(document).ready(function() {
-  $('input[name=Scalearp]').change(function(){
+  $('input[name=Scale]').change(function(){
     $('form').submit();
   });
 });
