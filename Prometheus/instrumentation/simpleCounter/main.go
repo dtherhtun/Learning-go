@@ -25,7 +25,7 @@ var (
 
 	responseStatus = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "opslab_response_status",
+			Name: "opslab_response_status_total",
 			Help: "Status of opslab HTTP response",
 		},
 		[]string{"status"},
