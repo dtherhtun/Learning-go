@@ -84,6 +84,6 @@ func restoreAction(ssId, zone string) error {
 		return err
 	}
 
-	fmt.Println("VolumeID ->", *vid)
+	fmt.Printf("Volume [%s] was successfully restored from snapshot [%s].\n", *vid, ssId)
 	return nil
 }

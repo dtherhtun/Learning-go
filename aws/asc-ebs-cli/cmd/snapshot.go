@@ -73,11 +73,11 @@ func snapshotAction(vId string) error {
 		ec2Client: ec2.NewFromConfig(cfg),
 	}
 
-	ssid, err := ebs.createSnapshot(vId)
+	ssId, err := ebs.createSnapshot(vId)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("SnapshotID ->", *ssid)
+	fmt.Printf("Snapshot [%s] was successfully snapshot from volume [%s].\n", *ssId, vId)
 	return nil
 }

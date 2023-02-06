@@ -57,7 +57,7 @@ func (ebs *ebsAction) deleteVolumeSnap(id string) (string, error) {
 		if err != nil {
 			return "", fmt.Errorf("error occred: %w", err)
 		}
-		return fmt.Sprintf("Snapshot [%s] was successfully deleted", id), nil
+		return fmt.Sprintf("Snapshot [%s] was successfully deleted.", id), nil
 	}
 	if strings.HasPrefix(id, "vol-") {
 		params := &ec2.DeleteVolumeInput{
@@ -67,7 +67,7 @@ func (ebs *ebsAction) deleteVolumeSnap(id string) (string, error) {
 		if err != nil {
 			return "", fmt.Errorf("error occred: %w", err)
 		}
-		return fmt.Sprintf("Volume [%s] was successfully deleted", id), nil
+		return fmt.Sprintf("Volume [%s] was successfully deleted.", id), nil
 	}
 	return "", errors.New("invalid input id")
 }
