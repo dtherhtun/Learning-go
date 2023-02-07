@@ -1,0 +1,16 @@
+instances:
+- id: i-0a3207b73a9df17b8
+  az: ap-southeast-1a
+  vid: vol-082cb2b9e8ff91d8d
+  snap: snap-06197638b9a7c0ab0
+  device: dadfaf
+- id: i-0540adedf73f502c1
+  az: ap-southeast-1c
+  vid: vol-0b79ef1a41f4d33bb
+  snap: snap-07bca36c8fab24411
+  device: /dev/sda1
+- id: i-08b6720e194fe490c
+  az: ap-southeast-1b
+  vid: vol-07f95ace0b44dfb12
+  snap: snap-00c763b1072c6f2bf
+  device: dafdafaf

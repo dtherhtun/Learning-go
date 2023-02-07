@@ -1,4 +1,4 @@
-module github.com/dtherhtun/Learning-go/aws/asc-ebs-cli
+module github.com/dtherhtun/Learning-go/aws/ec2revive
 
 go 1.19
 
@@ -7,6 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.12
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.84.1
 	github.com/spf13/cobra v1.6.1
+	gopkg.in/yaml.v2 v2.2.8
 )
 
 require (
