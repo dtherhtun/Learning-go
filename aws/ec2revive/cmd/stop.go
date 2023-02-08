@@ -37,7 +37,7 @@ import (
 // stopCmd represents the stop command
 var stopCmd = &cobra.Command{
 	Use:   "stop",
-	Short: "Deceased process of ec2 and ebs",
+	Short: "Deceased process of ec2 and ebs.",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		stateFile := viper.GetString("state-file")
 		return stopProcess(stateFile)
@@ -65,7 +65,7 @@ func stopProcess(stateFile string) error {
 	}
 
 	if data.Status == "Deceased" {
-		return errors.New("ec2 and ebs are already Deceased")
+		return errors.New("ec2 and ebs are already Deceased.(you can't die twice. you are not Loki)")
 	}
 
 	ctx := context.Background()
