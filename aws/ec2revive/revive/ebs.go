@@ -74,6 +74,15 @@ func (c *Client) RestoreVolume(ctx context.Context, snapshotID, zone string) (*e
 		SnapshotId:       aws.String(snapshotID),
 		AvailabilityZone: aws.String(zone),
 		VolumeType:       "gp3",
+		TagSpecifications: []types.TagSpecification{
+			{
+				ResourceType: types.ResourceTypeVolume,
+				Tags: []types.Tag{{
+					Key:   aws.String("ManagedBy"),
+					Value: aws.String("EC2Revive"),
+				}},
+			},
+		},
 	}
 
 	result, err := c.EC2Client.CreateVolume(ctx, input)

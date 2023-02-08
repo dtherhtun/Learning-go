@@ -24,6 +24,7 @@ type Instance struct {
 // Instances struct representing a list of EC2 instances
 type Instances struct {
 	InstanceList []Instance `yaml:"instances"`
+	Status       string     `yaml:"status"`
 }
 
 func (il *Instances) Load(statefile string) error {

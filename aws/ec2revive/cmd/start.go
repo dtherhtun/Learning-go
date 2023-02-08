@@ -23,11 +23,13 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"github.com/dtherhtun/Learning-go/aws/ec2revive/revive"
 )
@@ -35,10 +37,10 @@ import (
 // startCmd represents the start command
 var startCmd = &cobra.Command{
 	Use:   "start",
-	Short: "A brief description of your command",
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("start called")
-		startProcess()
+	Short: "Alive process of ec2 and ebs",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		stateFile := viper.GetString("state-file")
+		return startProcess(stateFile)
 	},
 }
 
@@ -56,17 +58,21 @@ func init() {
 	// startCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-func startProcess() {
+func startProcess(stateFile string) error {
 	data := &revive.Instances{}
-	if err := data.Load("./state.yaml"); err != nil {
-		fmt.Println(err)
+	if err := data.Load(stateFile); err != nil {
+		return err
+	}
+
+	if data.Status == "Alive" {
+		return errors.New("ec2 and ebs are already alive")
 	}
 
 	ctx := context.Background()
 
 	cfg, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
-		panic("configuration error, " + err.Error())
+		return fmt.Errorf("configuration error, %w" + err.Error())
 	}
 	client := revive.Client{
 		EC2Client: ec2.NewFromConfig(cfg),
@@ -78,10 +84,10 @@ func startProcess() {
 		instanceIDs = append(instanceIDs, data.InstanceList[i].ID)
 		restoreResult, err := client.RestoreVolume(ctx, data.InstanceList[i].Snap, data.InstanceList[i].AZ)
 		if err != nil {
-			fmt.Println(err)
+			return err
 		}
 		if err := data.UpdateVolumeByInstanceID(data.InstanceList[i].ID, *restoreResult.VolumeId); err != nil {
-			fmt.Println(err)
+			return err
 		}
 		fmt.Printf("Volume [%s] has been successfully restored from snapshot [%s].\n", *restoreResult.VolumeId, *restoreResult.SnapshotId)
 	}
@@ -89,7 +95,7 @@ func startProcess() {
 	for i := 0; i < len(data.InstanceList); i++ {
 		attachResult, err := client.AttachVolume(ctx, data.InstanceList[i].ID, data.InstanceList[i].Device, data.InstanceList[i].VID)
 		if err != nil {
-			fmt.Println(err)
+			return err
 		}
 		fmt.Printf("Volume [%s] has been successfully attached to instance [%s].\n", *attachResult.VolumeId, *attachResult.InstanceId)
 	}
@@ -102,12 +108,14 @@ func startProcess() {
 	for i := 0; i < len(data.InstanceList); i++ {
 		_, err := client.CleanUpSnapshot(ctx, data.InstanceList[i].Snap)
 		if err != nil {
-			fmt.Println(err)
+			return err
 		}
 		fmt.Printf("Snapshot [%s] has been successfully cleaned up.\n", data.InstanceList[i].Snap)
 	}
 
-	if err := data.Update("./state.yaml"); err != nil {
-		fmt.Println(err)
+	data.Status = "Alive"
+	if err := data.Update(stateFile); err != nil {
+		return err
 	}
+	return nil
 }

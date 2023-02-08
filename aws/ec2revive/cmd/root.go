@@ -25,12 +25,18 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "ec2revive",
-	Short: "A brief description of your application",
+	Short: "EC2Revive - automates EC2 instance and EBS volume management processes.",
+	Long: `EC2Revive - an essential utility for managing the lifecycle of Amazon 
+EC2 instances and EBS volumes. It is designed to automate 
+the process of stopping EC2 instances, snapshotting extra 
+volumes, deleting the volumes, restoring volumes from snapshots, 
+attaching the volumes to instances, and starting the instances.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
@@ -51,8 +57,11 @@ func init() {
 	// will be global for your application.
 
 	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.ec2revive.yaml)")
+	rootCmd.CompletionOptions.HiddenDefaultCmd = true
+	rootCmd.PersistentFlags().StringP("state-file", "f", "state.yaml", "State file for ec2 and ebs")
 
+	viper.BindPFlag("state-file", rootCmd.PersistentFlags().Lookup("state-file"))
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

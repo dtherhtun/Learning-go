@@ -1,19 +1,17 @@
 instances:
 - id: i-0a3207b73a9df17b8
   az: ap-southeast-1a
-  vid: vol-081f78c12bb2de288
-  snap: snap-05bd43e32938cfa0f
+  vid: vol-00e76665e537a55e3
+  snap: snap-070e673474c99acaf
   device: /dev/sdf
-  status: Deceased
 - id: i-0540adedf73f502c1
   az: ap-southeast-1c
-  vid: vol-06268d57f80b31001
-  snap: snap-01a07e82f7d7391b2
+  vid: vol-092dd6fb9f8ca1ad6
+  snap: snap-0e6737e178444b22d
   device: /dev/sdf
-  status: Deceased
 - id: i-08b6720e194fe490c
   az: ap-southeast-1b
-  vid: vol-0de83729759094c7e
-  snap: snap-01e8c0716080b615e
+  vid: vol-0d910156d6fb25f16
+  snap: snap-0b6882ab6c9eebdc3
   device: /dev/sdf
-  status: Deceased
+status: Alive

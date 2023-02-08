@@ -23,11 +23,13 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"github.com/dtherhtun/Learning-go/aws/ec2revive/revive"
 )
@@ -35,9 +37,10 @@ import (
 // stopCmd represents the stop command
 var stopCmd = &cobra.Command{
 	Use:   "stop",
-	Short: "A brief description of your command",
-	Run: func(cmd *cobra.Command, args []string) {
-		stopProcess()
+	Short: "Deceased process of ec2 and ebs",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		stateFile := viper.GetString("state-file")
+		return stopProcess(stateFile)
 	},
 }
 
@@ -55,17 +58,21 @@ func init() {
 	// stopCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-func stopProcess() {
+func stopProcess(stateFile string) error {
 	data := &revive.Instances{}
 	if err := data.Load("./state.yaml"); err != nil {
-		fmt.Println(err)
+		return err
+	}
+
+	if data.Status == "Deceased" {
+		return errors.New("ec2 and ebs are already Deceased")
 	}
 
 	ctx := context.Background()
 
 	cfg, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
-		panic("configuration error, " + err.Error())
+		return fmt.Errorf("configuration error, %w" + err.Error())
 	}
 	client := revive.Client{
 		EC2Client: ec2.NewFromConfig(cfg),
@@ -79,21 +86,21 @@ func stopProcess() {
 
 	stopResult, err := client.StopInstances(ctx, instanceIDs)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 
 	instancesInfo, err := client.GetInstancesInfo(ctx, instanceIDs)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 
 	for _, res := range instancesInfo.Reservations {
 		fmt.Printf("Instance [%s] has been successfully stopped.\n", *res.Instances[0].InstanceId)
 		if err := data.UpdateZoneByInstanceID(*res.Instances[0].InstanceId, *res.Instances[0].Placement.AvailabilityZone); err != nil {
-			fmt.Println(err)
+			return err
 		}
 		if err := data.UpdateDeviceByInstanceID(*res.Instances[0].InstanceId, *res.Instances[0].BlockDeviceMappings[1].DeviceName); err != nil {
-			fmt.Println(err)
+			return err
 		}
 	}
 
@@ -102,24 +109,26 @@ func stopProcess() {
 	for _, res := range stopResult.StoppingInstances {
 		snapResult, err := client.CreateSnapshot(ctx, *res.InstanceId)
 		if err != nil {
-			fmt.Println(err)
+			return err
 		}
 		if err := data.UpdateSnapshotByInstanceID(*res.InstanceId, *snapResult.Snapshots[0].SnapshotId); err != nil {
-			fmt.Println(err)
+			return err
 		}
 		volumeIDs = append(volumeIDs, *snapResult.Snapshots[0].VolumeId)
 		fmt.Printf("Snapshot [%s] has completed successfully!\n", *snapResult.Snapshots[0].SnapshotId)
 	}
 
 	if err := client.RemoveVolumes(ctx, volumeIDs); err != nil {
-		fmt.Println(err)
+		return err
 	}
 
 	for _, v := range volumeIDs {
 		fmt.Printf("Volume [%s] has been successfully deleted.\n", v)
 	}
 
+	data.Status = "Deceased"
 	if err := data.Update("./state.yaml"); err != nil {
-		fmt.Println(err)
+		return err
 	}
+	return nil
 }
