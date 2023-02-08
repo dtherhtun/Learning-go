@@ -143,6 +143,20 @@ func (c *Client) RemoveVolumes(ctx context.Context, volumeIDs []string) error {
 	return nil
 }
 
+func (c *Client) CleanUpSnapshot(ctx context.Context, snapshotID string) (*ec2.DeleteSnapshotOutput, error) {
+
+	input := &ec2.DeleteSnapshotInput{
+		SnapshotId: aws.String(snapshotID),
+	}
+
+	result, err := c.EC2Client.DeleteSnapshot(ctx, input)
+	if err != nil {
+		return nil, fmt.Errorf("error cleaning up snapshot: %w", err)
+	}
+
+	return result, nil
+}
+
 func (c *Client) AttachVolume(ctx context.Context, instanceID, device, volumeID string) (*ec2.AttachVolumeOutput, error) {
 
 	input := &ec2.AttachVolumeInput{

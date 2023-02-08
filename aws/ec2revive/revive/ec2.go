@@ -48,14 +48,15 @@ func (c *Client) StopInstances(ctx context.Context, instanceIDs []string) (*ec2.
 	return result, nil
 }
 
-func (c *Client) GetZone(ctx context.Context, instanceIDs []string) (*ec2.DescribeInstancesOutput, error) {
+func (c *Client) GetInstancesInfo(ctx context.Context, instanceIDs []string) (*ec2.DescribeInstancesOutput, error) {
 
 	input := &ec2.DescribeInstancesInput{
 		InstanceIds: instanceIDs,
 	}
+
 	results, err := c.EC2Client.DescribeInstances(ctx, input)
 	if err != nil {
-		return nil, fmt.Errorf("error getting instances zone: %w", err)
+		return nil, fmt.Errorf("error getting instances info: %w", err)
 	}
 
 	return results, nil

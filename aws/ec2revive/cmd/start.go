@@ -36,12 +36,6 @@ import (
 var startCmd = &cobra.Command{
 	Use:   "start",
 	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("start called")
 		startProcess()
@@ -79,12 +73,6 @@ func startProcess() {
 	}
 
 	var instanceIDs []string
-	//var snapshotIDs []string
-
-	//for i := 0; i < len(data.InstanceList); i++ {
-	//	instanceIDs = append(instanceIDs, data.InstanceList[i].ID)
-	//	snapshotIDs = append(snapshotIDs, data.InstanceList[i].Snap)
-	//}
 
 	for i := 0; i < len(data.InstanceList); i++ {
 		instanceIDs = append(instanceIDs, data.InstanceList[i].ID)
@@ -95,20 +83,28 @@ func startProcess() {
 		if err := data.UpdateVolumeByInstanceID(data.InstanceList[i].ID, *restoreResult.VolumeId); err != nil {
 			fmt.Println(err)
 		}
+		fmt.Printf("Volume [%s] has been successfully restored from snapshot [%s].\n", *restoreResult.VolumeId, *restoreResult.SnapshotId)
 	}
-	device_name := "/dev/sdf"
 
 	for i := 0; i < len(data.InstanceList); i++ {
-		attachResult, err := client.AttachVolume(ctx, data.InstanceList[i].ID, device_name, data.InstanceList[i].VID)
+		attachResult, err := client.AttachVolume(ctx, data.InstanceList[i].ID, data.InstanceList[i].Device, data.InstanceList[i].VID)
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Printf("volumeID [%s] is successfully attached to the instanceID [%s]\n", *attachResult.VolumeId, *attachResult.InstanceId)
+		fmt.Printf("Volume [%s] has been successfully attached to instance [%s].\n", *attachResult.VolumeId, *attachResult.InstanceId)
 	}
 
 	startResult, err := client.StartInstance(ctx, instanceIDs)
 	for _, res := range startResult.StartingInstances {
-		fmt.Printf("instanceID [%s] is running.\n", *res.InstanceId)
+		fmt.Printf("Instance [%s] is now running.\n", *res.InstanceId)
+	}
+
+	for i := 0; i < len(data.InstanceList); i++ {
+		_, err := client.CleanUpSnapshot(ctx, data.InstanceList[i].Snap)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Printf("Snapshot [%s] has been successfully cleaned up.\n", data.InstanceList[i].Snap)
 	}
 
 	if err := data.Update("./state.yaml"); err != nil {
