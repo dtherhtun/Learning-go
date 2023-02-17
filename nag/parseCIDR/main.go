@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"net/netip"
 )
 
 func main() {
@@ -19,4 +20,22 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Printf("Addr-> %s, Net-> %s\n", v6Addr, v6Net)
+
+	IPv4, err := netip.ParseAddr("224.0.0.1")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if IPv4.IsMulticast() {
+		fmt.Println("IPv4 address is Multicast")
+	}
+
+	IPv6, err := netip.ParseAddr("FE80:F00D::1")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if IPv6.IsLinkLocalUnicast() {
+		fmt.Println("IPv6 address is link local Unicast")
+	}
 }
