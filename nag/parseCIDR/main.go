@@ -38,4 +38,12 @@ func main() {
 	if IPv6.IsLinkLocalUnicast() {
 		fmt.Println("IPv6 address is link local Unicast")
 	}
+
+	v4 := net.ParseIP("192.0.2.1")
+	if err != nil {
+		log.Fatal(err)
+	}
+	v4s, _ := netip.AddrFromSlice(v4)
+	fmt.Println(v4s.String())
+	fmt.Println(v4s.Unmap().Is4())
 }
