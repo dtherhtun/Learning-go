@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package="github.com/dtherhtun/Learning-go/grpc-microservices-in-go/listing/twoPointOne";
+
+message CreatePaymentRequest {
+  float price = 1;
+}
+
+message CreatePaymentResponse {
+  int64 bill_id = 1;
+}
+
+service PaymentService {
+  rpc Create(CreatePaymentRequest) returns (CreatePaymentResponse) {}
+}
