@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <title>GitHub Data Downloader</title>
+
+                <script type="text/javascript">
+            function startMigration() {
+              const url = 'http://localhost:8080/api/github/export'
+              fetch(url, {
+                method: 'POST'
+              })
+              .then((response) => {
+                if (!response.ok) {
+                  response.text().then((text) => {
+                    document.getElementById('start_migration_result').textContent = "Error starting migration:" + text;
+                  });
+                } else {
+                  response.json().then((data) => {
+                    document.getElementById('start_migration_result').textContent = 'Migration started: ' + data.id + ' # of repositories: ' + data.repositories.length;
+                  });
+                }
+              })
+              .catch(function(error) {
+                document.getElementById('start_migration_result').textContent = "An unexpected error occurred" + error;
+              });
+            }
+        </script>
+
+        </head>
+        <body>
+
+                <p> Successfully authorized to access GitHub on your behalf: {{.Login}}</p>
+                <h1> Start New Export </h1>
+
+                <button onclick="startMigration()">Start New Export</button>
+
+                <div id="start_migration_result">
+                </div>
+
+                <p>Navigation</p>
+                <ul>
+                        <li>
+                                <a href="/github/exports">View Exports</a>
+                        </li>
+                        <li>
+                                <a href="/">Back to homepage</li>
+                </ul>
+                <p>
+                </p>
+        </body>
+</html>

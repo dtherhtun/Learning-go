@@ -23,7 +23,7 @@ func initOAuthConfig(getEnvironValue func(string) string) {
 	oauthConf = &oauth2.Config{
 		ClientID:     getEnvironValue("CLIENT_ID"),
 		ClientSecret: getEnvironValue("CLIENT_SECRET"),
-		Scopes:       []string{"repo", "user"}, // see the project desrciption for understandng why we need full scopes here
+		Scopes:       []string{"repo", "user"}, // see the project description for understanding why we need full scopes here
 		Endpoint:     github.Endpoint,
 	}
 }
@@ -31,6 +31,10 @@ func initOAuthConfig(getEnvironValue func(string) string) {
 func registerHandlers(mux *http.ServeMux) {
 	mux.HandleFunc("/", indexHandler)
 	mux.HandleFunc("/github/callback", githubCallbackHandler)
+
+	mux.HandleFunc("/github/export/new", githubNewExportViewHandler)
+	mux.HandleFunc("/api/github/export", githubNewExportApiHandler)
+	mux.HandleFunc("/github/exports", githubListExportsViewHandler)
 }
 
 func main() {

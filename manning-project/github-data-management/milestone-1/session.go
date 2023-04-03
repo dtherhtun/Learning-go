@@ -105,3 +105,19 @@ func setCookie(w http.ResponseWriter, name, value string, maxAge int) {
 		MaxAge: maxAge,
 	})
 }
+
+func initiateLoginIfRequired(w http.ResponseWriter, req *http.Request) *sessionData {
+	s, err := getSession(req)
+	if err == nil {
+		return s
+	}
+	stateToken, err := getRandomString()
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return nil
+	}
+	githubLoginUrl := oauthConf.AuthCodeURL(stateToken)
+	setCookie(w, oauthStateCookie, stateToken, 600)
+	http.Redirect(w, req, githubLoginUrl, http.StatusTemporaryRedirect)
+	return nil
+}

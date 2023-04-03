@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>GitHub Data Downloader</title>
+		<!--Style copied from https://www.w3schools.com/html/html_tables.asp -->
+		<style>
+		table {
+			  font-family: arial, sans-serif;
+			    border-collapse: collapse;
+			      width: 100%;
+		}
+
+				    td, th {
+					      border: 1px solid #dddddd;
+						text-align: left;
+						  padding: 8px;
+				    }
+
+				    tr:nth-child(even) {
+					      background-color: #dddddd;
+				    }
+		</style>
+		</head>
+	<body>
+		<h1> Ten Most Recent Exports </h1>
+		<table>
+		    <tr>
+			    <th> <b>Migration ID</b> </th>
+			    <th> <b>Date (UTC)<b> </th>
+			    <th> <b>Export Status</b></th>
+			    <th> <b>Download URL (if available)</b></th>
+	            </tr>
+
+		    {{range .}}
+			    <tr>
+				    <td>{{.ID}}</td>
+				    <td>{{.CreatedAt}}</td>
+				    <td>{{.State}}</td>
+				    <td>{{if .DownloadURL}}<a href="{{.DownloadURL}}">Download</a>{{end}}</td>
+			    </tr>
+		    {{end}}
+
+		 </table>
+		<h1>Navigation</h1>
+		<ul>
+			<li>
+				<a href="/">Back to homepage</li>
+		</ul>
+		<p>
+		</p>
+	</body>
+</html>
