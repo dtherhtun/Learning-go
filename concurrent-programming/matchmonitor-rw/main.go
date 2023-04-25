@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func matchRecorder(matchEvents *list.List, mutex *sync.Mutex) {
+func matchRecorder(matchEvents *list.List, mutex *sync.RWMutex) {
 	for i := 0; ; i++ {
 		mutex.Lock()
 		matchEvents.PushBack("Match event " + strconv.Itoa(i))
@@ -18,10 +18,10 @@ func matchRecorder(matchEvents *list.List, mutex *sync.Mutex) {
 	}
 }
 
-func clientHandler(mEvents *list.List, mutex *sync.Mutex, st time.Time) {
-	mutex.Lock()
+func clientHandler(mEvents *list.List, mutex *sync.RWMutex, st time.Time) {
+	mutex.RLock()
 	allEvents := copyAllEvents(mEvents)
-	mutex.Unlock()
+	mutex.RUnlock()
 	timeTaken := time.Since(st)
 	fmt.Println(len(allEvents), "events copied in", timeTaken)
 }
@@ -37,7 +37,7 @@ func copyAllEvents(matchEvents *list.List) []string {
 }
 
 func main() {
-	mutex := sync.Mutex{}
+	mutex := sync.RWMutex{}
 	var matchEvents = list.New()
 	for j := 0; j < 10000; j++ {
 		matchEvents.PushBack("Match event")
