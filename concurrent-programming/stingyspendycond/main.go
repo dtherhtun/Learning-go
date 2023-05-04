@@ -30,7 +30,7 @@ func stingy(money *int, cond *sync.Cond) {
 }
 
 func spendy(money *int, cond *sync.Cond) {
-	for i := 0; i < 2000000; i++ {
+	for i := 0; i < 200000; i++ {
 		cond.L.Lock()
 		for *money < 50 {
 			cond.Wait()
