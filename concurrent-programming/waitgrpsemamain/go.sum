@@ -1,0 +1,4 @@
+github.com/dtherhtun/Learning-go/concurrent-programming/semaphore v0.0.0-20230508024704-e070f10e4ba3 h1:0+YxH6IhtGBExuAn1sDBkNfFyvQk3d40Q9pgDo60QcE=
+github.com/dtherhtun/Learning-go/concurrent-programming/semaphore v0.0.0-20230508024704-e070f10e4ba3/go.mod h1:hkHfrPzgyatj2uyay13smjRKSigRxFtF82ie8l+fAT4=
+github.com/dtherhtun/Learning-go/concurrent-programming/waitgrpsema v0.0.0-20230508045126-3c19db71f812 h1:L0Bct8sBth0dRNm2hLFJpBfr5zG3XPkfP8AoJLsF/5A=
+github.com/dtherhtun/Learning-go/concurrent-programming/waitgrpsema v0.0.0-20230508045126-3c19db71f812/go.mod h1:LHnDO1YChjkSqg95/lbsLqPMljxiO0FYb8hzfECPUiI=
