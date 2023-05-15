@@ -18,7 +18,7 @@ func NewBarrier(size int) *Barrier {
 
 func (b *Barrier) Wait() {
 	b.cond.L.Lock()
-	b.waitCounter++
+	b.waitCounter += 1 
 	if b.waitCounter == b.size {
 		b.waitCounter = 0
 		b.cond.Broadcast()
