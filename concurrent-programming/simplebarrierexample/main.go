@@ -9,10 +9,13 @@ import (
 
 func WorkAndWait(name string, WorkStart int, br *barrier.Barrier) {
 	start := time.Now()
-	fmt.Println(time.Since(start), name, "is running")
-	time.Sleep(time.Duration(WorkStart) * time.Second)
-	fmt.Println(time.Since(start), name, "is waiting on barrier")
-	br.Wait()
+	for {
+		fmt.Println(time.Since(start), name, "is running")
+		time.Sleep(time.Duration(WorkStart) * time.Second)
+		fmt.Println(time.Since(start), name, "is waiting on barrier")
+		br.Wait()
+	}
+
 }
 
 func main() {
