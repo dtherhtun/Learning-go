@@ -8,7 +8,7 @@ import (
 	"github.com/dtherhtun/Learning-go/concurrent-programming/barrier"
 )
 
-const matrixSize = 3
+const matrixSize = 1200
 
 func generateRandMatrix(matrix *[matrixSize][matrixSize]int) {
 	for row := 0; row < matrixSize; row++ {
