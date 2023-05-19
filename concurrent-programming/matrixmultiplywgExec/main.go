@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-const matrixSize = 1200
+const matrixSize = 3
 
 func generateRandMatrix(matrix *[matrixSize][matrixSize]int) {
 	for row := 0; row < matrixSize; row++ {
