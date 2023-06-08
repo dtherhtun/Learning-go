@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"path/filepath"
+	"time"
 
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -18,9 +19,14 @@ import (
 )
 
 func main() {
-	// Set the label selector for the pods you want to retrieve
 	labelSelector := "app=asc-api"
-	threshold := resource.MustParse("1G")
+	threshold := resource.MustParse("0.1G")
+
+	interval := 3 * time.Minute
+
+	ticker := time.NewTicker(interval)
+	defer ticker.Stop()
+
 	ctx := context.Background()
 	var kubeconfig *string
 	if home := homedir.HomeDir(); home != "" {
@@ -30,12 +36,17 @@ func main() {
 	}
 	flag.Parse()
 
-	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
+	for range ticker.C {
+		runCode(*kubeconfig, labelSelector, threshold, ctx)
+	}
+}
+
+func runCode(kubeconfig, labelSelector string, threshold resource.Quantity, ctx context.Context) {
+	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Create a Kubernetes clientset using the provided configuration
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		log.Fatal(err)
@@ -46,7 +57,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Get the list of pods matching the label selector
 	pods, err := clientset.CoreV1().Pods("applications").List(ctx, metav1.ListOptions{
 		LabelSelector: labelSelector,
 	})
@@ -54,7 +64,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Iterate over the retrieved pods and get their memory usage
 	for _, pod := range pods.Items {
 		podName := pod.ObjectMeta.Name
 		containerName := pod.Spec.Containers[0].Name // Assuming only one container per pod
