@@ -5,7 +5,9 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 	"path/filepath"
+	"strconv"
 	"time"
 
 	v1 "k8s.io/api/core/v1"
@@ -21,8 +23,23 @@ import (
 func main() {
 	labelSelector := "app=asc-api"
 	threshold := resource.MustParse("0.1G")
-
 	interval := 3 * time.Minute
+
+	if os.Getenv("RESTART_LABEL") != "" {
+		labelSelector = os.Getenv("RESTART_LABEL")
+	}
+
+	if os.Getenv("RESTART_THRESHOLD") != "" {
+		threshold = resource.MustParse(os.Getenv("RESTART_THRESHOLD"))
+	}
+
+	if os.Getenv("RESTART_INTERVAL") != "" {
+		restartInterval, err := strconv.Atoi(os.Getenv("RESTART_INTERVAL"))
+		if err != nil {
+			log.Println("unable to parse interval from environment")
+		}
+		interval = time.Duration(restartInterval) * time.Minute
+	}
 
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
