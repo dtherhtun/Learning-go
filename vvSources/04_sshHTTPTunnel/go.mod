@@ -1,4 +1,4 @@
-module github.com/dtherhtun/Learning-Go/youtube/04_sshHTTPTunnel
+module github.com/dtherhtun/Learning-go/vvSources/04_sshHTTPTunnel
 
 go 1.20
 
