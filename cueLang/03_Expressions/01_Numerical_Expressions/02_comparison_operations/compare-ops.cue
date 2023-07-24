@@ -10,4 +10,4 @@ doubledig: >=10 & <=100 & int
 lowercase: >="a" & <="z"
 
 notone: <1 | >1
-//notone: 1  // error, empty disjuntion
+// notone: 1 // error, empty disjuntion
