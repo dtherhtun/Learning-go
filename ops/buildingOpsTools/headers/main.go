@@ -35,6 +35,7 @@ func main() {
 	if err != nil {
 		log.Fatalln("Unable to read content")
 	}
+
 	fmt.Println(string(content))
 	fmt.Println(resp.StatusCode)
 }
