@@ -1,7 +1,6 @@
 package nap
 
 import (
-	"fmt"
 	"net/http"
 	"net/url"
 	"testing"
@@ -22,7 +21,6 @@ func TestUnknownStatusCode(t *testing.T) {
 	}
 
 	if err := router.CallFunc(resp, nil); err == nil {
-		fmt.Println(err)
 		t.Fail()
 	}
 }
