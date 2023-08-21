@@ -6,6 +6,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+type ForkResponse struct {
+	CloneURL string `json:"clone_url"`
+	FullName string `json:"full_name"`
+}
+
 var ForkCmd = &cobra.Command{
 	Use:   "fork",
 	Short: "fork a GitHub Repository",
