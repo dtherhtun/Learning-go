@@ -32,7 +32,7 @@ type PullRequestResponse struct {
 }
 
 var PullRequestCmd = &cobra.Command{
-	Use:   "pullrequest",
+	Use:   "pr",
 	Short: "Create a Pull Request",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := CreatePullRequest(); err != nil {
