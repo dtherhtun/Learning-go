@@ -12,7 +12,10 @@ func GitHubAPI() *nap.API {
 		api = nap.NewAPI("https://api.github.com")
 		token := viper.GetString("token")
 		api.SetAuth(nap.NewAuthToken(token))
-		// api.AddResource()
+		api.AddResource("fork", GetForkResource())
+		api.AddResource("search", GetSearchResource())
+		api.AddResource("docs", GetReadmeResource())
+		api.AddResource("pr", GetPullRequestResource())
 	}
 	return api
 }

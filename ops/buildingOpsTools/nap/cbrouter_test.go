@@ -20,7 +20,7 @@ func TestUnknownStatusCode(t *testing.T) {
 		StatusCode: 404,
 	}
 
-	if err := router.CallFunc(resp, nil); err == nil {
+	if err := router.CallFunc(resp); err == nil {
 		t.Fail()
 	}
 }

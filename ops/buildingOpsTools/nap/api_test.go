@@ -8,13 +8,13 @@ import (
 func TestAPICall(t *testing.T) {
 	api := NewAPI("https://httpbin.org")
 	router := NewRouter()
-	router.RegisterFunc(200, func(resp *http.Response, _ interface{}) error {
+	router.RegisterFunc(200, func(resp *http.Response) error {
 		return nil
 	})
 
 	res := NewResource("/get", "GET", router)
 	api.AddResource("get", res)
-	if err := api.Call("get", nil); err != nil {
+	if err := api.Call("get", nil, nil); err != nil {
 		t.Fail()
 	}
 
@@ -27,7 +27,7 @@ func TestAPICall(t *testing.T) {
 func TestAPIAuth(t *testing.T) {
 	api := NewAPI("https://httpbin.org")
 	router := NewRouter()
-	router.RegisterFunc(200, func(resp *http.Response, _ interface{}) error {
+	router.RegisterFunc(200, func(resp *http.Response) error {
 		return nil
 	})
 
@@ -41,7 +41,7 @@ func TestAPIAuth(t *testing.T) {
 	if err := api.Call("basicauth", map[string]string{
 		"user": "user",
 		"pass": "passw0rd",
-	}); err != nil {
+	}, nil); err != nil {
 		t.Fail()
 	}
 }
