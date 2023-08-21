@@ -33,10 +33,10 @@ var SearchCmd = &cobra.Command{
 func SearchByKeyword(keywords []string) error {
 	return GitHubAPI().Call("search", map[string]string{
 		"query": strings.Join(keywords, "+"),
-	})
+	}, nil)
 }
 
-func SearchSuccess(resp *http.Response, _ interface{}) error {
+func SearchSuccess(resp *http.Response) error {
 	defer resp.Body.Close()
 	content, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -50,7 +50,7 @@ func SearchSuccess(resp *http.Response, _ interface{}) error {
 	return nil
 }
 
-func SearchDefaultRouter(resp *http.Response, _ interface{}) error {
+func SearchDefaultRouter(resp *http.Response) error {
 	return fmt.Errorf("status code %d", resp.StatusCode)
 }
 

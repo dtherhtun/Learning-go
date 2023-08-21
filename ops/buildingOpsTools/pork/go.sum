@@ -65,8 +65,8 @@ github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ3
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/dtherhtun/Learning-go/ops/buildingOpsTools/nap v0.0.0-20230820101028-c5926c949c2b h1:MYMgNQDRehHPd0xQQFuk9X1cmgFYefSrLoJocZ65khA=
-github.com/dtherhtun/Learning-go/ops/buildingOpsTools/nap v0.0.0-20230820101028-c5926c949c2b/go.mod h1:hcQzY/yoWtYG7c8e97b7NSTiBZ1cwYGNAhUxvun4Byg=
+github.com/dtherhtun/Learning-go/ops/buildingOpsTools/nap v0.0.0-20230821151409-b1d3f4a92600 h1:kAsf9SsfhO7te2XDDMItcsDkfAkMDDl9I7vUeu7lgxQ=
+github.com/dtherhtun/Learning-go/ops/buildingOpsTools/nap v0.0.0-20230821151409-b1d3f4a92600/go.mod h1:hcQzY/yoWtYG7c8e97b7NSTiBZ1cwYGNAhUxvun4Byg=
 github.com/elazarl/goproxy v0.0.0-20221015165544-a0805db90819 h1:RIB4cRk+lBqKK3Oy0r2gRX4ui7tuhiZq2SuTtTCi0/0=
 github.com/emirpasic/gods v1.18.1 h1:FXtiHYKDGKCW2KzwZKx0iC0PQmdlorYgdFG9jPXJ1Bc=
 github.com/emirpasic/gods v1.18.1/go.mod h1:8tpGGwCnJ5H4r6BWwaV6OrWmMoPhUl5jm/FMNAnJvWQ=

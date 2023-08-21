@@ -1,10 +1,14 @@
 package pork
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"net/http"
 	"strings"
 
+	"github.com/dtherhtun/Learning-go/ops/buildingOpsTools/nap"
 	"github.com/spf13/cobra"
 )
 
@@ -40,15 +44,15 @@ var PullRequestCmd = &cobra.Command{
 func CreatePullRequest() error {
 	sourceValues := strings.Split(sourceRepo, ":")
 	if !(len(sourceValues) == 1 || len(sourceValues) == 2) {
-		return fmt.Errorf("source repository must in the format [owner:]branch got %v", sourceRepo)
+		return fmt.Errorf("Source repository must in the format [owner:]branch got %v", sourceRepo)
 	}
 	destBranchValues := strings.Split(destRepo, ":")
 	if len(destBranchValues) != 2 {
-		return fmt.Errorf("destination repository must be in the format owner/project:branch got %v", destRepo)
+		return fmt.Errorf("Destination repository must be in the format owner/project:branch got %v", destRepo)
 	}
 	destValues := strings.Split(destBranchValues[0], "/")
 	if len(destValues) != 2 {
-		return fmt.Errorf("destination repository must be in the format owner/project:branch got %v", destRepo)
+		return fmt.Errorf("Destination repository must be in the format owner/project:branch got %v", destRepo)
 	}
 	payload := &PullRequestPayload{
 		Title:        pullRequestTitle,
@@ -60,5 +64,36 @@ func CreatePullRequest() error {
 	return GitHubAPI().Call("pullrequest", map[string]string{
 		"owner":   destValues[0],
 		"project": destValues[1],
-	})
+	}, payload)
+}
+
+func PullRequestSuccess(resp *http.Response) error {
+	defer resp.Body.Close()
+	content, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	respContent := PullRequestResponse{}
+	json.Unmarshal(content, &respContent)
+	fmt.Printf("Created Pull Request: %s\n", respContent.URL)
+	return nil
+}
+
+func PullRequestDefaultRouter(resp *http.Response) error {
+	return fmt.Errorf("status code %d", resp.StatusCode)
+}
+
+func GetPullRequestResource() *nap.RestResource {
+	router := nap.NewRouter()
+	router.RegisterFunc(201, PullRequestSuccess)
+	router.DefaultRouter = PullRequestDefaultRouter
+	resource := nap.NewResource("/repos/{{.owner}}/{{.project}}/pulls", "POST", router)
+	return resource
+}
+
+func init() {
+	PullRequestCmd.Flags().StringVarP(&sourceRepo, "source", "s", "", "source repository")
+	PullRequestCmd.Flags().StringVarP(&destRepo, "destination", "d", "", "destination repository")
+	PullRequestCmd.Flags().StringVarP(&pullRequestTitle, "title", "t", "Basic Pull Request", "pull request title")
+	PullRequestCmd.Flags().StringVarP(&pullRequestMessage, "message", "m", "", "pull request message")
 }

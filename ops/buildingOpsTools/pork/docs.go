@@ -35,10 +35,10 @@ func GetRepositoryReadme(repository string) error {
 	return GitHubAPI().Call("docs", map[string]string{
 		"owner":   values[0],
 		"project": values[1],
-	})
+	}, nil)
 }
 
-func ReadmeSuccess(resp *http.Response, _ interface{}) error {
+func ReadmeSuccess(resp *http.Response) error {
 	defer resp.Body.Close()
 	content, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -54,7 +54,7 @@ func ReadmeSuccess(resp *http.Response, _ interface{}) error {
 	return nil
 }
 
-func ReadmeDefaultRouter(resp *http.Response, _ interface{}) error {
+func ReadmeDefaultRouter(resp *http.Response) error {
 	return fmt.Errorf("status code %d", resp.StatusCode)
 }
 

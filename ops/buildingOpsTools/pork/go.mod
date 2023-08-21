@@ -3,7 +3,7 @@ module github.com/dtherhtun/Learning-go/ops/buildingOpsTools/pork
 go 1.20
 
 require (
-	github.com/dtherhtun/Learning-go/ops/buildingOpsTools/nap v0.0.0-20230820101028-c5926c949c2b
+	github.com/dtherhtun/Learning-go/ops/buildingOpsTools/nap v0.0.0-20230821151409-b1d3f4a92600
 	github.com/go-git/go-git/v5 v5.8.1
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.16.0

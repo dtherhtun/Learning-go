@@ -38,10 +38,10 @@ func ForkRepository(repository string) error {
 	return GitHubAPI().Call("fork", map[string]string{
 		"owner": values[0],
 		"repo":  values[1],
-	})
+	}, nil)
 }
 
-func ForkSuccess(resp *http.Response, _ interface{}) error {
+func ForkSuccess(resp *http.Response) error {
 	defer resp.Body.Close()
 	content, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -56,7 +56,7 @@ func ForkSuccess(resp *http.Response, _ interface{}) error {
 func GetForkResource() *nap.RestResource {
 	forkRouter := nap.NewRouter()
 	forkRouter.RegisterFunc(202, ForkSuccess)
-	forkRouter.RegisterFunc(401, func(_ *http.Response, _ interface{}) error {
+	forkRouter.RegisterFunc(401, func(_ *http.Response) error {
 		return fmt.Errorf("you must set an authentication token")
 	})
 	fork := nap.NewResource("/repos/{{.owner}}/{{.repo}}/forks", "POST", forkRouter)
