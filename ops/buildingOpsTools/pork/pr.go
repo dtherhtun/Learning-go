@@ -44,15 +44,15 @@ var PullRequestCmd = &cobra.Command{
 func CreatePullRequest() error {
 	sourceValues := strings.Split(sourceRepo, ":")
 	if !(len(sourceValues) == 1 || len(sourceValues) == 2) {
-		return fmt.Errorf("Source repository must in the format [owner:]branch got %v", sourceRepo)
+		return fmt.Errorf("source repository must in the format [owner:]branch got %v", sourceRepo)
 	}
 	destBranchValues := strings.Split(destRepo, ":")
 	if len(destBranchValues) != 2 {
-		return fmt.Errorf("Destination repository must be in the format owner/project:branch got %v", destRepo)
+		return fmt.Errorf("destination repository must be in the format owner/project:branch got %v", destRepo)
 	}
 	destValues := strings.Split(destBranchValues[0], "/")
 	if len(destValues) != 2 {
-		return fmt.Errorf("Destination repository must be in the format owner/project:branch got %v", destRepo)
+		return fmt.Errorf("destination repository must be in the format owner/project:branch got %v", destRepo)
 	}
 	payload := &PullRequestPayload{
 		Title:        pullRequestTitle,
