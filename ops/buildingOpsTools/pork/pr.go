@@ -61,7 +61,7 @@ func CreatePullRequest() error {
 		DestBranch:   destBranchValues[1],
 		Modify:       true,
 	}
-	return GitHubAPI().Call("pullrequest", map[string]string{
+	return GitHubAPI().Call("pr", map[string]string{
 		"owner":   destValues[0],
 		"project": destValues[1],
 	}, payload)
