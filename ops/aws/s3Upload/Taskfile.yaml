@@ -1,0 +1,27 @@
+version: '3'
+
+vars:
+  BUCKET: "test-dev"
+  PREFIX: "test/"
+  FILE: "testdata/text.txt"
+
+tasks:
+  run:
+    desc: Run Upload
+    deps:
+      - build
+    cmds:
+      - date >{{.FILE}}
+      - ls -l {{.FILE}}
+      - aws s3 rm s3://{{.BUCKET}}/{{.PREFIX}}text.txt
+      - echo "Before"
+      - aws s3 ls s3://{{.BUCKET}}/{{.PREFIX}}
+      - ./dist/s3Upload --file {{.FILE}} --bucket {{.BUCKET}} --prefix {{.PREFIX}}
+      - echo "After"
+      - aws s3 ls s3://{{.BUCKET}}/{{.PREFIX}}
+    silent: false
+    ignore_error: true
+
+  build:
+    cmds:
+      - go build -o dist/s3Upload cmd/main.go
