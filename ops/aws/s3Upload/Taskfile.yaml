@@ -11,7 +11,6 @@ tasks:
     deps:
       - build
     cmds:
-      - date >{{.FILE}}
       - ls -l {{.FILE}}
       - aws s3 rm s3://{{.BUCKET}}/{{.PREFIX}}text.txt
       - echo "Before"
