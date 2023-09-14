@@ -23,6 +23,11 @@ tasks:
     cmds:
       - aws dynamodb scan --table-name {{.TABLE}}
 
+  clean:
+    desc: Clean local buil
+    cmds:
+      - rm -rf ./dist
+
   build:
     desc: Build app
     sources:
