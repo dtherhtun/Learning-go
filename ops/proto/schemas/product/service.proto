@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package bigstar.product;
+
+option go_package ="github.com/dtherhtun/Learning-go/ops/proto/go/product";
+
+import "product/message.proto";
+
+service ProductService {
+  rpc GetProducts(AllProductsRequest) returns (AllProductsResponse);
+  rpc GetProductById(GetProductRequest) returns (GetProductResponse);
+  rpc ProductSearch(SearchRequest) returns (SearchResponse);
+}

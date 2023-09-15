@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package bigstar.character;
+
+option go_package ="github.com/dtherhtun/Learning-go/ops/proto/go/character";
+
+import "character/message.proto";
+
+service CharacterService {
+  rpc GetCharacters(AllCharactersRequest) returns (AllCharactersResponse);
+  rpc GetCharacterById(GetCharacterRequest) returns (GetCharacterResponse);
+}

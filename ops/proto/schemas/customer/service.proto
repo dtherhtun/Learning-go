@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package bigstar.customer;
+
+option go_package ="github.com/dtherhtun/Learning-go/ops/proto/go/customer";
+
+import "customer/message.proto";
+
+service CustomerService {
+  rpc Signin(SigninRequest) returns (SigninResponse);
+  rpc Login(LoginRequest) returns (LoginResponse);
+}

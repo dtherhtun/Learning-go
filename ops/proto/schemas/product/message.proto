@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package bigstar.product;
+
+option go_package ="github.com/dtherhtun/Learning-go/ops/proto/go/product";
+
+import "header/header.proto";
+
+message Product {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  string type = 4;
+  string price = 5;
+}
+
+message Empty {}
+
+message AllProductsRequest {
+  Header header = 1;
+  Empty query = 2;
+}
+
+message Result {
+  Product product = 1;
+}
+
+message AllProductsResponse {
+  Header header = 1;
+  repeated Result results = 2;
+}
+
+message GetProductRequest {
+  Header header = 1;
+  int32 product_id = 2;
+}
+
+message GetProductResponse {
+  Header header = 1;
+  Result result = 2;
+}
+
+enum SortOrder {
+  UNKNOWN = 0;
+  ASCENDING = 1;
+  DESCENDING = 2;
+}
+
+message SearchQuery {
+  string search_string = 1;
+  int32 quantity = 2;
+  SortOrder sort = 3;
+}
+
+message SearchRequest {
+  Header header = 1;
+  SearchQuery query = 2;
+}
+
+message SearchResponse {
+  Header header = 1;
+  repeated Result results = 2;
+}
