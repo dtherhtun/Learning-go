@@ -4,7 +4,7 @@ package bigstar.product;
 
 option go_package ="github.com/dtherhtun/Learning-go/ops/proto.cc/go/product";
 
-import "product/message.proto";
+import "schemas/product/message.proto";
 
 service ProductService {
   rpc GetProducts(AllProductsRequest) returns (AllProductsResponse);

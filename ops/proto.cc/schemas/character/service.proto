@@ -4,7 +4,7 @@ package bigstar.character;
 
 option go_package ="github.com/dtherhtun/Learning-go/ops/proto.cc/go/character";
 
-import "character/message.proto";
+import "schemas/character/message.proto";
 
 service CharacterService {
   rpc GetCharacters(AllCharactersRequest) returns (AllCharactersResponse);

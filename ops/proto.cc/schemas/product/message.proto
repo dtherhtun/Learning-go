@@ -4,7 +4,7 @@ package bigstar.product;
 
 option go_package ="github.com/dtherhtun/Learning-go/ops/proto.cc/go/product";
 
-import "header/header.proto";
+import "schemas/header/header.proto";
 
 message Product {
   int32 id = 1;

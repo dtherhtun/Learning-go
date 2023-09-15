@@ -4,7 +4,7 @@ package bigstar.customer;
 
 option go_package ="github.com/dtherhtun/Learning-go/ops/proto.cc/go/customer";
 
-import "customer/message.proto";
+import "schemas/customer/message.proto";
 
 service CustomerService {
   rpc Signin(SigninRequest) returns (SigninResponse);
