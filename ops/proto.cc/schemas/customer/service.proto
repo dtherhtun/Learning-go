@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package bigstar.customer;
 
-option go_package ="github.com/dtherhtun/Learning-go/ops/proto/go/customer";
+option go_package ="github.com/dtherhtun/Learning-go/ops/proto.cc/go/customer";
 
 import "customer/message.proto";
 

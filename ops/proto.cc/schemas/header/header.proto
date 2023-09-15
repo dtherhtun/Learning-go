@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package bigstar;
 
-option go_package = "github.com/dtherhtun/Learning-go/ops/proto/go/header";
+option go_package = "github.com/dtherhtun/Learning-go/ops/proto.cc/go/header";
 
 option java_package = "com.example.bigstar.header";
 option java_outer_classname = "HeaderProto";
