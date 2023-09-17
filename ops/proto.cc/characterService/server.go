@@ -45,3 +45,25 @@ func (cs *CharacterServer) GetCharacters(ctx context.Context, request *pb.AllCha
 		Results: results,
 	}, nil
 }
+
+func (cs *CharacterServer) GetCharacterById(ctx context.Context, request *pb.GetCharacterRequest) (*pb.GetCharacterResponse, error) {
+	response, err := character.GetCharacterById(strconv.Itoa(int(request.GetCharacterId())))
+	if err != nil {
+		return nil, err
+	}
+
+	i, _ := strconv.ParseInt(response.ID, 10, 32)
+
+	return &pb.GetCharacterResponse{
+		Header: request.GetHeader(),
+		Result: &pb.Result{
+			Character: &pb.Character{
+				Id:          int32(i),
+				Name:        response.Name,
+				Category:    response.Category,
+				Bio:         response.Bio,
+				Description: response.Description,
+			},
+		},
+	}, nil
+}
