@@ -1,0 +1,39 @@
+version: '3'
+
+tasks:
+  build_char:
+    desc: Build Character Service
+    sources:
+      - characterService/*.go
+    generates:
+      - dist/charSvc
+    cmds:
+      - go build -C ./characterService -o ./dist/charSvc
+
+  build_cust:
+    desc: Build Customer Service
+    sources:
+      - customerService/*.go
+    generates:
+      - dist/charSvc
+    cmds:
+      - go build -C ./customerService -o ./dist/custSvc
+
+  run_char:
+    desc: Run Character Service
+    deps:
+      - build_char
+    cmds:
+      - ./characterService/dist/charSvc
+  run_cust:
+    desc: Run Customer Service
+    deps:
+      - build_cust
+    cmds:
+      - ./customerService/dist/custSvc
+
+  clean:
+    desc: Clean all build
+    cmds:
+      - rm -rf ./customerService/dist
+      - rm -rf ./characterService/dist
