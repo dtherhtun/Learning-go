@@ -17,7 +17,7 @@ type CustomerServer struct {
 }
 
 func newServer() *CustomerServer {
-	db, err := sql.Open("sqlite3", "./sqlcustomer.db")
+	db, err := sql.Open("sqlite3", "./customer.db")
 	if err != nil {
 		log.Fatal(err)
 	}

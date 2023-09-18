@@ -1,7 +1,7 @@
-github.com/dtherhtun/Learning-go/ops/proto.cc/characterService/character v0.0.0-20230915150919-0a4ef0e3e43f h1:9dYuUf1FsbjkyVjXUt/XTPaALYJvZCxT+EGz8pRzjFM=
-github.com/dtherhtun/Learning-go/ops/proto.cc/characterService/character v0.0.0-20230915150919-0a4ef0e3e43f/go.mod h1:M8fPyISwdqZ7fFPYvR3+DGcxLWz4rmSrg1gJ6zQbS/s=
-github.com/dtherhtun/Learning-go/ops/proto.cc/go/character v0.0.0-20230915135829-b345ddf36be1 h1:wGNFqwWvI+y+LOSsWcfVF0Gl6lKmgBEOth6VH4TyXOw=
-github.com/dtherhtun/Learning-go/ops/proto.cc/go/character v0.0.0-20230915135829-b345ddf36be1/go.mod h1:T1gpNojXiNs1eerVJttw9dGH9dYhex5ImoMAD/nXbEk=
+github.com/dtherhtun/Learning-go/ops/proto.cc/characterService/character v0.0.0-20230918042839-a66529e14585 h1:CcQt2d80kP579R+jxkwO/mvu/720oJNV3oeU8s/5xfk=
+github.com/dtherhtun/Learning-go/ops/proto.cc/characterService/character v0.0.0-20230918042839-a66529e14585/go.mod h1:M8fPyISwdqZ7fFPYvR3+DGcxLWz4rmSrg1gJ6zQbS/s=
+github.com/dtherhtun/Learning-go/ops/proto.cc/go/character v0.0.0-20230918042839-a66529e14585 h1:mv4s8bPaHldAI/PlPXpVE5puyve/k3uJgjSK0hS14DU=
+github.com/dtherhtun/Learning-go/ops/proto.cc/go/character v0.0.0-20230918042839-a66529e14585/go.mod h1:T1gpNojXiNs1eerVJttw9dGH9dYhex5ImoMAD/nXbEk=
 github.com/dtherhtun/Learning-go/ops/proto.cc/go/header v0.0.0-20230915134859-79fb758dcaad h1:mjU70ZO3ot5u4SpAConIxl0Aj+/6I9wwwLlYtTpJEus=
 github.com/dtherhtun/Learning-go/ops/proto.cc/go/header v0.0.0-20230915134859-79fb758dcaad/go.mod h1:N6MJlHDzFt4launBCnnNeMeLE4Pudd16TEb1CgfuBbM=
 github.com/golang/protobuf v1.5.0/go.mod h1:FsONVRAS9T7sI+LIUmWTfcYkHO4aIWwzhcaSAoJOfIk=
