@@ -41,7 +41,7 @@ func (cs *CustomerServer) Sigin(ctx context.Context, request *pb.SigninRequest) 
 	c.Email = customer.GetEmail()
 
 	if cust.ExistingUser(cs.DB, &c) {
-		return nil, errors.New("User already exists")
+		return nil, errors.New("user already exists")
 	}
 
 	err := cust.Signup(cs.DB, &c)
@@ -50,6 +50,33 @@ func (cs *CustomerServer) Sigin(ctx context.Context, request *pb.SigninRequest) 
 	}
 
 	return &pb.SigninResponse{
+		Header: request.GetHeader(),
+		Customer: &pb.Customer{
+			Id:       int32(c.ID),
+			Username: c.Username,
+			Password: c.Passwd,
+			Email:    c.Email,
+		},
+	}, nil
+}
+
+func (cs *CustomerServer) Login(ctx context.Context, request *pb.LoginRequest) (*pb.LoginResponse, error) {
+	log.Println("gRPC CustomerServer Login")
+
+	customer := request.GetCustomer()
+
+	var c cust.Customer
+	c.ID = int(customer.GetId())
+	c.Username = customer.GetUsername()
+	c.Passwd = customer.GetPassword()
+	c.Email = customer.GetEmail()
+
+	_, err := cust.Login(cs.DB, &c)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.LoginResponse{
 		Header: request.GetHeader(),
 		Customer: &pb.Customer{
 			Id:       int32(c.ID),
