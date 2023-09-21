@@ -1,4 +1,4 @@
-module github.com/dtherhtun/Learning-go/grpc/rides
+module github.com/dtherhtun/Learning-go/grpc/backoffice
 
 go 1.20
 
