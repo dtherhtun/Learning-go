@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/golang/protobuf/proto"
 	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/dtherhtun/Learning-go/grpc/rides/pb"

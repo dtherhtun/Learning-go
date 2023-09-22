@@ -1,0 +1,54 @@
+version: '3'
+
+tasks:
+  server_build:
+    desc: Build Rides Grpc Server
+    sources:
+      - cmd/server/*.go
+    generates:
+      - dist/server
+    cmds:
+      - go build -C ./cmd/server -o ./dist/server
+
+  gateway_build:
+    desc: Build Rides Grpc Gateway
+    sources:
+      - cmd/gateway/*.go
+    generates:
+      - dist/gateway
+    cmds:
+      - go build -C ./cmd/gateway -o ./dist/gateway
+
+  client_build:
+    desc: Build Rides Grpc Client
+    sources:
+      - cmd/client/*.go
+    generates:
+      - dist/client
+    cmds:
+      - go build -C ./cmd/client -o ./dist/client
+
+  run:
+    desc: Run GRPC Gateway and server
+    deps:
+      - server_build
+      - gateway_build
+    cmds:
+      - ./cmd/server/dist/server
+      - ./cmd/gateway/dist/gateway
+
+  run_client:
+    desc: Run GRPC Client
+    deps:
+      - client_build
+    cmds:
+      - ./cmd/client/dist/client
+
+  clean:
+    desc: Clean all service
+    cmds:
+      - kill -9 $(ps aux | grep "./cmd/server/dist/server" | grep -v "grep" | awk '{ print $2 }')
+      - kill -9 $(ps aux | grep "./cmd/gateway/dist/gateway" | grep -v "grep" | awk '{ print $2 }')
+      - rm -rf ./cmd/server/dist
+      - rm -rf ./cmd/gateway/dist
+      - rm -rf ./cmd/client/dist
