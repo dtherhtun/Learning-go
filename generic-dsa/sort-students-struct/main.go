@@ -19,9 +19,9 @@ func addStudent[T any](students []T, student T) []T {
 	return append(students, student)
 }
 
-type OrderedSlice[T Ordered] []T
+type OrderedSlice[A Ordered] []A
 
-func (s OrderedSlice[T]) Len() int {
+func (s OrderedSlice[A]) Len() int {
 	return len(s)
 }
 
