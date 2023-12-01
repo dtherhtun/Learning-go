@@ -66,7 +66,6 @@ func (f *Filter) FilterBySizeAndColor(products []Product, size Size, color Color
 }
 
 // ---------------------------
-
 type Specification interface {
 	IsSatisfied(p *Product) bool
 }
