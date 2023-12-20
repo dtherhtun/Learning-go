@@ -23,10 +23,11 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
-	"github.com/spf13/cobra/doc"
 	"io"
 	"os"
+
+	"github.com/spf13/cobra"
+	"github.com/spf13/cobra/doc"
 )
 
 // docsCmd represents the docs command
