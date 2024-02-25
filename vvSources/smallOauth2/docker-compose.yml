@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  auth-service:
+    build:
+      context: ./auth-service
+    ports:
+      - "9096:9096"
+
+  protected-service:
+    build:
+      context: ./resource-service
+    ports:
+      - "9097:9097"
