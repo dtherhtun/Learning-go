@@ -25,6 +25,7 @@ func (l *LinkedList[T]) Print() {
 		fmt.Println(temp.data)
 		temp = temp.next
 	}
+	fmt.Println("-----------------")
 }
 
 func (l *LinkedList[T]) Head() T {
@@ -69,6 +70,51 @@ func (l *LinkedList[T]) RemoveLast() {
 	l.tail = pre
 	l.tail.next = nil
 	l.size--
+	if l.size == 0 {
+		l.head = nil
+		l.tail = nil
+	}
+}
+
+func (l *LinkedList[T]) Prepend(data T) {
+	if l.size == 0 {
+		l.Append(data)
+		return
+	}
+	newNode := &Node[T]{
+		data: data,
+		next: l.head,
+	}
+	l.head = newNode
+	l.size++
+}
+
+func (l *LinkedList[T]) RemoveFirst() {
+	if l.size == 0 {
+		return
+	}
+	temp := l.head
+	l.head = l.head.next
+	temp.next = nil
+	l.size--
+	if l.size == 0 {
+		l.tail = nil
+	}
+}
+
+func (l *LinkedList[T]) Get(i int) T {
+	var empty T
+	if l.size == 0 || i > l.size {
+		return empty
+	}
+	temp := l.head
+	for j := 0; j < l.size; j++ {
+		if j == i {
+			return temp.data
+		}
+		temp = temp.next
+	}
+	return empty
 }
 
 func main() {
@@ -79,11 +125,14 @@ func main() {
 	ll.Append(4)
 
 	ll.Print()
-	ll.RemoveLast()
-	fmt.Println("Head ", ll.Head())
-	fmt.Println("Tail ", ll.Tail())
+	ll.RemoveFirst()
+	ll.Prepend(0)
+
+	//fmt.Println("Head ", ll.Head())
+	//fmt.Println("Tail ", ll.Tail())
 	ll.Print()
 	fmt.Println(ll.size)
+	fmt.Println(ll.Get(4))
 }
 
 //go:generate go build -gcflags "-m" main.go
