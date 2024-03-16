@@ -133,6 +133,28 @@ func (l *LinkedList[T]) Set(i int, value T) {
 	}
 }
 
+func (l *LinkedList[T]) Insert(i int, value T) {
+	if i < 0 || i > l.size {
+		return
+	}
+	if i == 0 {
+		l.Prepend(value)
+		return
+	}
+	if i == l.size {
+		l.Append(value)
+		return
+	}
+	newNode := &Node[T]{
+		data: value,
+		next: nil,
+	}
+	temp := l.Get(i - 1)
+	newNode.next = temp.next
+	temp.next = newNode
+	l.size++
+}
+
 func main() {
 	ll := NewLinkedList[int]()
 	ll.Append(1)
@@ -148,6 +170,7 @@ func main() {
 
 	fmt.Println("Head ", ll.Head().data)
 	fmt.Println("Tail ", ll.Tail().data)
+	ll.Insert(5, 8)
 	ll.Print()
 	fmt.Println(ll.size)
 	fmt.Println(ll.Get(4))
