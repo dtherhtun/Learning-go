@@ -28,12 +28,18 @@ func (l *LinkedList[T]) Print() {
 	fmt.Println("-----------------")
 }
 
-func (l *LinkedList[T]) Head() T {
-	return l.head.data
+func (l *LinkedList[T]) Head() *Node[T] {
+	if l.head != nil {
+		return l.head
+	}
+	return nil
 }
 
-func (l *LinkedList[T]) Tail() T {
-	return l.tail.data
+func (l *LinkedList[T]) Tail() *Node[T] {
+	if l.tail != nil {
+		return l.tail
+	}
+	return nil
 }
 
 func (l *LinkedList[T]) Length() int {
@@ -102,19 +108,29 @@ func (l *LinkedList[T]) RemoveFirst() {
 	}
 }
 
-func (l *LinkedList[T]) Get(i int) T {
-	var empty T
+func (l *LinkedList[T]) Get(i int) *Node[T] {
+
 	if l.size == 0 || i > l.size {
-		return empty
+		return nil
 	}
 	temp := l.head
 	for j := 0; j < l.size; j++ {
 		if j == i {
-			return temp.data
+			return temp
 		}
 		temp = temp.next
 	}
-	return empty
+	return nil
+}
+
+func (l *LinkedList[T]) Set(i int, value T) {
+	if l.size == 0 || l.size < i {
+		return
+	}
+	temp := l.Get(i)
+	if temp != nil {
+		temp.data = value
+	}
 }
 
 func main() {
@@ -127,9 +143,11 @@ func main() {
 	ll.Print()
 	ll.RemoveFirst()
 	ll.Prepend(0)
+	ll.Set(3, 5)
+	ll.Append(6)
 
-	//fmt.Println("Head ", ll.Head())
-	//fmt.Println("Tail ", ll.Tail())
+	fmt.Println("Head ", ll.Head().data)
+	fmt.Println("Tail ", ll.Tail().data)
 	ll.Print()
 	fmt.Println(ll.size)
 	fmt.Println(ll.Get(4))
