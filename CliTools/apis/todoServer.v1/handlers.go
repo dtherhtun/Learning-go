@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/dtherhtun/Learning-go/CliTools/interacting/todo"
 	"net/http"
 	"strconv"
 	"sync"
+
+	"github.com/dtherhtun/Learning-go/CliTools/apis/todoServer.v1/todo"
 )
 
 var (
