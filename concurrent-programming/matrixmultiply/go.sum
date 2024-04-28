@@ -1,2 +1,2 @@
-github.com/dtherhtun/Learning-go/concurrent-programming/barrier v0.0.0-20230515054003-3f1545d5de72 h1:mNAHTRXYtvSqhdRLGllOMSWNUeaYiBCsM1z9YUieG+U=
-github.com/dtherhtun/Learning-go/concurrent-programming/barrier v0.0.0-20230515054003-3f1545d5de72/go.mod h1:jUPMMhmOg4avHKSxEhXpIDg/DzDEi+/DDg2fNAgs7xU=
+github.com/dtherhtun/Learning-go/concurrent-programming/barrier v0.0.0-20240428041815-e1d2c0311987 h1:Hs6C4yyWHY5rCLSmpdJSP8q9hU5wP1WUENg6YBWMw+8=
+github.com/dtherhtun/Learning-go/concurrent-programming/barrier v0.0.0-20240428041815-e1d2c0311987/go.mod h1:jUPMMhmOg4avHKSxEhXpIDg/DzDEi+/DDg2fNAgs7xU=
