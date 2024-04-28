@@ -1,70 +1,85 @@
 package main
 
 import (
-	_ "bytes"
-	"fmt"
+	"bufio"
 	"io"
+	"log"
 	"net"
-)
-
-const (
-	mqttPort              = 1887
-	mqttBroker            = "localhost"
-	mqttPacketTypeMask    = 0xF0
-	mqttControlPacketType = 0x30
+	"os"
+	"os/signal"
+	"strings"
+	"syscall"
 )
 
 func main() {
-	listener, err := net.Listen("tcp", ":1883")
+	proxyPort := ":1883"
+	upstreamServer := ":1887"
+
+	listener, err := net.Listen("tcp", proxyPort)
 	if err != nil {
-		fmt.Println("Error listening:", err)
-		return
+		log.Fatalf("Error starting proxy server: %v", err)
 	}
 	defer listener.Close()
 
-	mqttConn, err := net.Dial("tcp", fmt.Sprintf("%s:%d", mqttBroker, mqttPort))
-	if err != nil {
-		fmt.Println("Error connecting to MQTT broker:", err)
-		return
-	}
-	defer mqttConn.Close()
+	log.Printf("Proxy server started on %s\n", proxyPort)
 
-	fmt.Println("TCP proxy listening on port:", listener.Addr())
+	// Set up signal handler for graceful shutdown
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
+
+	go func() {
+		<-sigChan
+		log.Println("Shutting down...")
+		listener.Close()
+	}()
 
 	for {
-		conn, err := listener.Accept()
+		downstreamConn, err := listener.Accept()
 		if err != nil {
-			fmt.Println("Error accepting connection:", err)
+			// Check if the error is due to listener being closed during shutdown
+			if strings.Contains(err.Error(), "use of closed network connection") {
+				log.Println("Listener closed, exiting...")
+				return
+			}
+			log.Printf("Error accepting connection: %v", err)
 			continue
 		}
-		go handleClient(conn, mqttConn)
+
+		go handleConnection(downstreamConn, upstreamServer)
 	}
 }
 
-func handleClient(clientConn net.Conn, mqttConn net.Conn) {
-	defer clientConn.Close()
+func handleConnection(downstreamConn net.Conn, upstreamServer string) {
+	defer downstreamConn.Close()
 
-	firstByte := make([]byte, 1)
-
-	n, err := clientConn.Read(firstByte)
+	reader := bufio.NewReader(downstreamConn)
+	firstLine, err := reader.ReadString('\n')
 	if err != nil {
-		if err != io.EOF {
-			fmt.Println("Error reading first byte:", err)
-		}
+		log.Printf("Error reading from downstream connection: %v", err)
 		return
 	}
 
-	if n != 1 || (firstByte[0]&mqttPacketTypeMask) != mqttControlPacketType {
-		fmt.Println("Dropping non-MQTT packet")
+	if strings.Contains(firstLine, "HTTP") {
+		log.Println("[+] Detected HTTP request, dropping packet")
 		return
 	}
 
-	_, err = io.Copy(mqttConn, clientConn)
+	upstreamConn, err := net.Dial("tcp", upstreamServer)
 	if err != nil {
-		if err != io.EOF {
-			fmt.Println("Error copying data:", err)
-		}
+		log.Printf("Error connecting to upstream server: %v", err)
 		return
 	}
-	fmt.Printf("Forwarded %d bytes to MQTT broker\n", n)
+	defer upstreamConn.Close()
+
+	_, err = upstreamConn.Write([]byte(firstLine))
+	if err != nil {
+		log.Printf("Error writing data to upstream connection: %v", err)
+		return
+	}
+
+	go io.Copy(upstreamConn, downstreamConn)
+	_, err = io.Copy(downstreamConn, upstreamConn)
+	if err != nil {
+		log.Printf("Error copying from upstream to downstream: %v", err)
+	}
 }

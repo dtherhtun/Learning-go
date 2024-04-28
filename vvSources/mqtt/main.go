@@ -31,14 +31,18 @@ func main() {
 }
 
 func createMqttClient() mqtt.Client {
-	connectAddress := "mqtts://ssq.dev.amity.co:443"
+	connectAddress := "mqtts://ssq.staging.something.com:443"
 	rand.Seed(time.Now().UnixNano())
 	clientID := fmt.Sprintf("go-client-%d", rand.Int())
 
 	fmt.Println("connect address: ", connectAddress)
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker(connectAddress)
-
+	opts.SetUsername("65f81dc0f521d4ff7db14a21")
+	opts.SetPassword("..-Io0qI2K-----epefs1w")
+	// dev
+	//opts.SetUsername("65f9358d6201d114b0964dd5")
+	//opts.SetPassword("..ajnmpVIx5wsZj9dS---WDqKXP----")
 	//opts.A
 	opts.SetClientID(clientID)
 	opts.SetKeepAlive(time.Second * 60)
