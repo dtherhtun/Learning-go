@@ -7,7 +7,7 @@ func largestPrimeFactor(n int) int {
 	k := n
 	result := 0
 	for i <= k {
-		for isPrime(i) && k%i == 0 {
+		if isPrime(i) && k%i == 0 {
 			k = k / i
 			result = i
 		}
