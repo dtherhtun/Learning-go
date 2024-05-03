@@ -45,10 +45,10 @@ func containsZero(sequence []int) bool {
 
 func greatestProduct(a [][]int) int {
 	result := 0
-	for i, v := range a {
+	for _, v := range a {
 		product := 1
-		for j := 0; j < len(v); j++ {
-			product = product * a[i][j]
+		for _, digit := range v {
+			product *= digit
 		}
 		if result < product {
 			result = product
