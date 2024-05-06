@@ -7,8 +7,7 @@ func pythagoreanTriplet(n int) int {
 		for b := a + 1; b < (n-1)/2; b++ {
 			c := n - a - b
 			if a*a+b*b == c*c {
-				product := a * b * c
-				return product
+				return a * b * c
 			}
 		}
 	}
