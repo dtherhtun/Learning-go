@@ -9,7 +9,6 @@ func sumOfPrimeBelow(n int) int {
 	sum := 5
 	for i < n {
 		if isPrime(i) {
-			fmt.Println(i)
 			sum = sum + i
 		}
 		i = i + 2
@@ -39,7 +38,7 @@ func sieveOfEratosthenes(limit int) []bool {
 		prime[i] = true
 	}
 	for p := 2; p*p < limit; p++ {
-		if prime[p] == true {
+		if prime[p] {
 			for i := p * p; i < limit; i += p {
 				prime[i] = false
 			}
@@ -60,6 +59,6 @@ func sumOfPrimes(limit int) int {
 }
 
 func main() {
-	fmt.Println(sumOfPrimeBelow(2000000))
+	//fmt.Println(sumOfPrimeBelow(2000000))
 	fmt.Println(sumOfPrimes(2000000))
 }
