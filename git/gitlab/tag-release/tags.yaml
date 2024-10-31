@@ -1,0 +1,10 @@
+tags:
+  - project: "1144"
+    branch: "dt/NZCDEV-356"
+    tagName: "TestAutoTag-01"
+  - project: "1127"
+    branch: "dt/NZCDEV-356"
+    tagName: "Auto-Release-02"
+  - project: "1200"
+    branch: "dt/NZCDEV-356"
+    tagName: "Auto-Release-02"
