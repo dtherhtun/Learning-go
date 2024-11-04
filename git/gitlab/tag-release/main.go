@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/xanzy/go-gitlab"
 	"gopkg.in/yaml.v3"
@@ -15,12 +16,13 @@ type Tag struct {
 }
 
 type Config struct {
-	Tags []Tag `yaml:"tags"`
+	Tags      []Tag  `yaml:"tags"`
+	Server    string `yaml:"server"`
+	PAT       string `yaml:"pat"`
+	TargetEnv string `yaml:"targetEnv"`
 }
 
 func main() {
-	server := ""
-	pat := ""
 
 	data, err := os.ReadFile("tags.yaml")
 	if err != nil {
@@ -34,50 +36,67 @@ func main() {
 		return
 	}
 
-	git, err := gitlab.NewClient(pat, gitlab.WithBaseURL(server))
+	git, err := gitlab.NewClient(config.PAT, gitlab.WithBaseURL(config.Server))
 	if err != nil {
 		fmt.Print(err)
 		os.Exit(1)
 	}
 
-	pipelineOps := &gitlab.ListProjectPipelinesOptions{Ref: gitlab.Ptr(config.Tags[0].TagName)}
-	pipelines, _, err := git.Pipelines.ListProjectPipelines(config.Tags[0].Project, pipelineOps)
-	if err != nil {
-
-		return
-	}
-
-	for i, pipeline := range pipelines {
-		fmt.Println(i, pipeline.ID, pipeline.Ref, pipeline.Status, pipeline.Source, pipeline.WebURL, pipeline.IID)
-	}
-
-	jobs, _, err := git.Jobs.ListPipelineJobs(config.Tags[0].Project, pipelines[0].ID, &gitlab.ListJobsOptions{})
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	for i, job := range jobs {
-		if job.Name == "package" {
-			fmt.Println(i, " id -> ", job.ID, " name -> ", job.Name, " status -> ", job.Status, " tag -> ", job.Tag, " url -> ", job.WebURL, " state -> ", job.Stage, "pipeline job status ->", job.Pipeline.Status)
+	for _, tag := range config.Tags {
+		tagCreatOpts := &gitlab.CreateTagOptions{
+			TagName: gitlab.Ptr(tag.TagName),
+			Ref:     gitlab.Ptr(tag.Branch),
+			Message: gitlab.Ptr("Tag created from branch " + tag.Branch),
 		}
 
+		t, _, err := git.Tags.CreateTag(tag.Project, tagCreatOpts)
+		if err != nil {
+			fmt.Printf("Failed to create tag: %v\n", err)
+			os.Exit(1)
+		}
+
+		fmt.Printf("Tag created successfully: %s\n", t.Name)
+		time.Sleep(2 * time.Second)
 	}
 
-	//for _, tag := range config.Tags {
-	//	tagCreatOpts := &gitlab.CreateTagOptions{
-	//		TagName: gitlab.Ptr(tag.TagName),
-	//		Ref:     gitlab.Ptr(tag.Branch),
-	//		Message: gitlab.Ptr("Tag created from branch " + tag.Branch),
-	//	}
-	//
-	//	t, _, err := git.Tags.CreateTag(tag.Project, tagCreatOpts)
-	//	if err != nil {
-	//		fmt.Printf("Failed to create tag: %v\n", err)
-	//		os.Exit(1)
-	//	}
-	//
-	//	fmt.Printf("Tag created successfully: %s\n", t.Name)
-	//}
+	// I would like to use concurrency start from here
+	for _, tag := range config.Tags {
+		pipelineOps := &gitlab.ListProjectPipelinesOptions{Ref: gitlab.Ptr(tag.TagName)}
+		pipelines, _, err := git.Pipelines.ListProjectPipelines(tag.Project, pipelineOps)
+		if err != nil {
+			return
+		}
 
+		for {
+			pkgFinished := false
+			jobs, _, err := git.Jobs.ListPipelineJobs(tag.Project, pipelines[0].ID, &gitlab.ListJobsOptions{})
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+
+			var playJobID int
+
+			for _, job := range jobs {
+				if job.Name == config.TargetEnv {
+					playJobID = job.ID
+				}
+				if job.Name == "package" && job.Status == "success" {
+					pkgFinished = true
+					break
+				}
+			}
+
+			if pkgFinished {
+				fmt.Println("Package finished successfully")
+				job, _, err := git.Jobs.PlayJob(tag.Project, playJobID, &gitlab.PlayJobOptions{})
+				if err != nil {
+					return
+				}
+				fmt.Println(job.Name, " is running.")
+				break
+			}
+			time.Sleep(10 * time.Second)
+		}
+	}
 }
