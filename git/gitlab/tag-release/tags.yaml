@@ -1,0 +1,13 @@
+targetEnv: "" # job-name to trigger after build/test
+server: "" # Gitlab Server URI
+pat: "" # Personal Access Token
+tags:
+  - project: "824"
+    branch: "feat/new-release"
+    tagName: "0.0.1-SG-PROD-01"
+  - project: "819"
+    branch: "feat/implement-chat"
+    tagName: "0.0.1-US-PROD-01"
+  - project: "821"
+    branch: "fix/bug-0.8"
+    tagName: "0.0.1-EU-PROD-01"
