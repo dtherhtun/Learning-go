@@ -24,7 +24,7 @@ type Config struct {
 }
 
 func main() {
-	data, err := os.ReadFile("tags.yaml")
+	data, err := os.ReadFile("release-rlc.yaml")
 	if err != nil {
 		fmt.Printf("[-] Failed to read YAML file: %v\n", err)
 		return
